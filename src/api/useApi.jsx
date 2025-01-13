@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getSessionCookie } from '../helpers/cookies';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API
+    baseURL: "https://medscan-api.fly.dev"
 });
 
 export const useApi = () => ({
