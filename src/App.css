@@ -1,0 +1,69 @@
+h1 {
+    font-family: "Dosis", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.title-page {
+    color: #212529;
+    padding: 20px;
+}
+
+tr, td {
+    font-family: "Roboto", sans-serif;
+}
+
+.gradiente {
+    background-image: linear-gradient(to left, rgba(0, 198, 233, 0.219), rgba(0, 137, 82, 0.219)), url("./assets/background.png") ;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-origin: center;
+    background-clip: content-box;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+  }
+  
+  .profile-image {
+    transition: 0.3s ease-in-out;
+    width: 150px; /* Ajuste conforme necessário */
+    height: 150px; /* Ajuste conforme necessário */
+  }
+  
+  .image-container:hover .profile-image {
+    filter: brightness(50%);
+  }
+  
+  .overlay {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .image-container:hover .overlay {
+    opacity: 1;
+  }
+  
+  .overlay-text {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
