@@ -165,9 +165,7 @@ useEffect(() => {
             "Sucesso",
             "Usuário editado com sucesso!",
             "success",
-            () => {
-              handleReturn();
-            }
+            () => handleReturn()
           );
           setLoading(false);
           handleLimparCampos();

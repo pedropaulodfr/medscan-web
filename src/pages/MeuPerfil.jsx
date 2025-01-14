@@ -27,7 +27,7 @@ export default function MeuPerfil() {
   const [usuario, setUsuario] = useState([])
   const [isChangeFoto, setIsChangeFoto] = useState(false)
   const [isEditarCadastro, setIsEditarCadastro] = useState(false)
-  const [atualizarRegistros, setAtuailzarRegistros] = useState(false)
+  const [atualizarRegistros, setAtualizarRegistros] = useState(false)
   const fileInputRef = useRef(null);
 
   const handleChangeFoto = () => {
@@ -56,7 +56,7 @@ export default function MeuPerfil() {
 
   const handleReturn = () => {
     setIsEditarCadastro(false)
-    setAtuailzarRegistros(true)
+    setAtualizarRegistros(true)
   }
 
   const onSubmitImagem = () => {
@@ -65,6 +65,7 @@ export default function MeuPerfil() {
       paciente: null
     }
     
+    setLoading(true);
     api.put("/Usuarios/updateImagem", _usuario)
       .then((result) => {
         if (result.status !== 200)
@@ -72,7 +73,6 @@ export default function MeuPerfil() {
 
         showMessage( "Sucesso", "Foto alterada com sucesso!", "success", null);
         setIsChangeFoto(false)
-        setAtuailzarRegistros(true)
         setLoading(false);
       })
       .catch((err) => {
@@ -82,16 +82,17 @@ export default function MeuPerfil() {
   };
 
   useEffect(() => {
-    setAtuailzarRegistros(false)
+    setAtualizarRegistros(false)
     const fetchData = async () => {
       try {
+        
         setLoading(true);
+        setUsuario({});
         api.get(`/Usuarios/get/${getSessionCookie().usuarioId}`).then((result) => {
             if (result.data.perfil == "Paciente") {
               result.data.paciente.usuarios = result.data
             }
             setUsuario(result.data);
-            setAtuailzarRegistros(true)
             setLoading(false);
           });
       } catch (error) {
@@ -101,7 +102,7 @@ export default function MeuPerfil() {
     };
 
     fetchData();
-  }, []);
+  }, [isEditarCadastro, setIsEditarCadastro, isChangeFoto, setIsChangeFoto, atualizarRegistros]);
 
   return (
     <Container>
