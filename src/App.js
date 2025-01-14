@@ -12,6 +12,7 @@ import Admin from './layouts/Admin'
 import menus from './routes/MenusSidebar';
 import { Login } from './pages/Login';
 import RequireAuth from './contexts/Auth/RequireAuth';
+import { getSessionCookie } from './helpers/cookies';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
           <Route element={<PrivateRoutes />}>
             {menus.map((menu, key) => {
               if(!menu.submenus) {
+                if (!(!menu.modulo || menu?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0))
+                  return
                 return (
                   <Route
                     key={key}
@@ -29,6 +32,8 @@ function App() {
                   />
                 )
               } else {
+                if (!(!menu.submenus.modulo || menu?.submenus?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0))
+                  return
                 return menu.submenus.map((submenu, subKey) => (
                   <Route
                     key={subKey}

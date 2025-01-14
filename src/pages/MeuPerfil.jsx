@@ -146,7 +146,7 @@ export default function MeuPerfil() {
           {usuario?.perfil == "Paciente" && <FichaPaciente dados={usuario} />}
           {usuario?.perfil == "Admin" && <FichaUsuario dados={usuario} />}
           <Row>
-            <Col className="d-flex justify-content-center">
+            <Col className="d-flex justify-content-center mb-4">
               <Button
                 className="m-3 mb-0 mt-2 text-white"
                 variant="warning"
