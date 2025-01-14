@@ -274,7 +274,7 @@ useEffect(() => {
             </Form.Select>
           </Form.Group>
         </Col>
-        {getSessionCookie()?.perfil == "Admin" &&
+        {getSessionCookie()?.perfil == "Admin" && getSessionCookie()?.usuarioId == dadosEdicao?.id &&
         <Row>
         <hr className="text-black d-none d-sm-block m-2" />
         <span className="fw-bold mb-2">Senha de Acesso</span>

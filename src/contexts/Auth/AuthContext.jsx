@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         return error;
       });
       
-      if (response.data?.usuario_Id && response.data?.token) {
+      if (response.data?.usuarioId && response.data?.token) {
         setToken(response.data)
         setIsLoggedIn(true)
         return { success: true, statusCode: response.status }

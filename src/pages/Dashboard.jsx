@@ -50,7 +50,7 @@ export default function Dashboard() {
           setLoading(false);
         });
         
-        api.get(`/Dashboard/proximoRetorno/${getSessionCookie()?.paciente_Id}`).then((result) => {
+        api.get(`/Dashboard/proximoRetorno/${getSessionCookie()?.pacienteId}`).then((result) => {
           result?.data?.map(m => {
             m.dataRetornoFormatada = moment(m.dataRetorno).format("DD/MM/YYYY")
           })
@@ -59,7 +59,7 @@ export default function Dashboard() {
           setLoading(false);
         });
         
-        api.get(`/Dashboard/estoqueMedicamentos/${getSessionCookie()?.paciente_Id}`).then((result) => {
+        api.get(`/Dashboard/estoqueMedicamentos/${getSessionCookie()?.pacienteId}`).then((result) => {
           setdadosEstoqueMedicamentos(result.data);
           setLoading(false);
         });

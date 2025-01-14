@@ -77,7 +77,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
         dataRetorno: moment(dadosEdicao.dataRetorno, 'DD/MM/YYYY').format("YYYY-MM-DD"),
         quantidade: dadosEdicao.quantidade,
         profissional: dadosEdicao.profissional,
-        usuarioId: getSessionCookie()?.usuario_Id
+        usuarioId: getSessionCookie()?.usuarioId
       });
     }
   }, []);
@@ -140,7 +140,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosCartaoControle = {
       ...dadosCartaoControle,
-      usuarioId: getSessionCookie()?.usuario_Id
+      usuarioId: getSessionCookie()?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {

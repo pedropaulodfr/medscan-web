@@ -83,7 +83,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
         tempo: dadosEdicao.tempo,
         periodo: dadosEdicao.periodo,
         dose: dadosEdicao.dose,
-        usuarioId: getSessionCookie()?.usuario_Id,
+        usuarioId: getSessionCookie()?.usuarioId,
         medicamento: {
           id: dadosEdicao.medicamento.id,
           tipoMedicamentoId: dadosEdicao.medicamento.tipoMedicamentoId,
@@ -164,7 +164,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosReceituario = {
       ...dadosReceituario,
-      usuarioId: getSessionCookie()?.usuario_Id
+      usuarioId: getSessionCookie()?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {

@@ -91,7 +91,7 @@ export default function CartaoControle() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get(`/CartaoControle/get/${getSessionCookie()?.paciente_Id}`).then((result) => {
+        api.get(`/CartaoControle/get/${getSessionCookie()?.pacienteId}`).then((result) => {
           result?.data?.map(m => {
             m.data = moment(m.data).format("DD/MM/YYYY")
             m.dataRetorno = moment(m.dataRetorno).format("DD/MM/YYYY")

@@ -37,6 +37,7 @@ export default function MeuPerfil() {
   };
 
   const handleFileChange = (event) => {
+    setLoading(true);
     const file = event.target.files[0];
     if (file) {
       // Você pode fazer o upload da imagem aqui
@@ -50,6 +51,7 @@ export default function MeuPerfil() {
       };
       reader.readAsDataURL(file);
     }
+    setLoading(false);
   };
 
   const handleReturn = () => {
@@ -84,7 +86,7 @@ export default function MeuPerfil() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get(`/Usuarios/get/${getSessionCookie().usuario_Id}`).then((result) => {
+        api.get(`/Usuarios/get/${getSessionCookie().usuarioId}`).then((result) => {
             if (result.data.perfil == "Paciente") {
               result.data.paciente.usuarios = result.data
             }

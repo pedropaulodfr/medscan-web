@@ -73,7 +73,7 @@ export default function Receituario() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await api.get(`/Receituario/get/${getSessionCookie()?.paciente_Id}`).then((result) => {
+        await api.get(`/Receituario/get/${getSessionCookie()?.pacienteId}`).then((result) => {
           result.data.map(m => {
             m.medicamentoFormatado = `${m.medicamento.identificacao} ${m.medicamento.concentracao} ${m.medicamento.unidade}`;
             m.doseFormatada = `${m.dose} ${m.medicamento.tipoMedicamento}`;
