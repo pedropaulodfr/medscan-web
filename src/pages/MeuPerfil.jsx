@@ -15,6 +15,7 @@ import { showMessage } from "../helpers/message";
 
 // Importar Componentes
 import { useApi } from "../api/useApi";
+import { useAuth } from "../contexts/Auth/AuthContext";
 import { getSessionCookie } from "../helpers/cookies";
 import FichaPaciente from "./Pacientes/FichaPaciente";
 import AddPacientes from "./Pacientes/AddPacientes";
@@ -23,6 +24,7 @@ import AddUsuarios from "./Usuarios/AddUsuarios";
 
 export default function MeuPerfil() {
   const api = useApi();
+  const { setup } = useAuth();
   const [loading, setLoading] = useState(false);
   const [usuario, setUsuario] = useState([])
   const [isChangeFoto, setIsChangeFoto] = useState(false)
@@ -123,7 +125,8 @@ export default function MeuPerfil() {
                   </span>
                 </div>
                 <div className="image-container">
-                  <Image className="profile-image" src={`data:image/jpg;base64, ${usuario?.imagemPerfil}`} roundedCircle />
+                  {console.log(setup)}
+                  <Image className="profile-image" src={`${setup?.caminhoArquivos}\\${usuario?.imagemPerfil}`} roundedCircle />
                   <div className="overlay">
                     <span className="overlay-text" onClick={handleChangeFoto}>Alterar Foto</span>
                   </div>
