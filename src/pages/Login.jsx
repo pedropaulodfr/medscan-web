@@ -8,14 +8,19 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { useAuth } from "../contexts/Auth/AuthContext"
+import Modals from "../components/Modals/Modals";
+import { useApi } from "../api/useApi";
 
 export const Login = () => {
   const auth = useAuth();
+  const api = useApi();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isRecuperarSenha, setIsRecuperarSenha] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const handleEmailInput = (event) => {
     setEmail(event.target.value);
@@ -31,12 +36,7 @@ export const Login = () => {
       await auth.login(email, password).then((result) => {
         if (result.statusCode !== 200) {
           setLoading(false);
-          showMessage(
-            "Aviso",
-            "Usuário ou senha inválidos. Tente novamente!",
-            "error",
-            null
-          );
+          showMessage("Aviso", "Usuário ou senha inválidos. Tente novamente!", "error", null);
         } else {
           setLoading(false);
           navigate("/home");
@@ -45,12 +45,50 @@ export const Login = () => {
     }
   };
 
+  const handleRecuperacaoSenha = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    } else {
+      const email = form.elements.emailRecuperacao.value;
+      setLoading(true);
+      api.post("/Usuarios/esqueceuSenha", {email: email})
+        .then((result) => {
+          if (result.status !== 200)
+            throw new Error(result?.response?.data?.message);
+  
+          showMessage("Aviso", "A senha foi enviada para o seu e-mail!", "success", null);
+          setIsRecuperarSenha(false);
+          setLoading(false);
+        })
+        .catch((err) => {
+          showMessage("Erro", err, "error", null);
+          setLoading(false);
+        });
+    }
+
+    setValidated(true);
+  };
+
   return (
     <div
       className="login d-flex justify-content-center align-items-center gradiente"
       style={{ minHeight: "100vh" }}
     >
       {loading && <Loading />}
+      {isRecuperarSenha && 
+        <Modals close={() => setIsRecuperarSenha(false)} title={"Recuperar Senha"} >
+          <Form noValidate onSubmit={handleRecuperacaoSenha} validated={validated}>
+            <Form.Group as={Col} className="mb-3" controlId="emailRecuperacao">
+              <Form.Label>Email</Form.Label>
+              <Form.Control  type="email" placeholder="Digite seu e-mail" required />
+              <Form.Control.Feedback type="invalid" />
+            </Form.Group>
+            <Button type="submit" variant="primary">Recuperar Senha</Button>
+          </Form>
+        </Modals>
+      }
       <Container>
         <Row className="justify-content-md-center">
           <Col xs={12} md={4}>
@@ -92,6 +130,9 @@ export const Login = () => {
                     onChange={handlePasswordInput}
                   />
                 </Col>
+              </Form.Group>
+              <Form.Group className="mb-3">
+              <Form.Label column sm="4" style={{cursor: "pointer"}} onClick={setIsRecuperarSenha}>Esquecia a senha</Form.Label>
               </Form.Group>
               <Row className="justify-content-md-center">
                 <Col md="auto">

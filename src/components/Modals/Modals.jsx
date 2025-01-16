@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Modals( {title = "", text = "", close} ) {
+function Modals( {children, title = "", close} ) {
   const [lgShow, setLgShow] = useState(true);
 
   if (lgShow == false) {
@@ -22,7 +22,7 @@ function Modals( {title = "", text = "", close} ) {
             {title}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>{text}</Modal.Body>
+        <Modal.Body>{children}</Modal.Body>
       </Modal>
     </>
   );

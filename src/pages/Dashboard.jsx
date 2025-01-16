@@ -121,7 +121,7 @@ export default function Dashboard() {
   return (
     <Container>
       {loading && <Loading />}
-      {cliqueCard && <Modals close={setCliqueCard} title={titleModal} text={textModal} />}
+      {cliqueCard && <Modals close={setCliqueCard} title={titleModal}>{textModal}</Modals>}
       <Row className="justify-content-md-center">
         <Col className="d-flex justify-content-center" >
           <h1 className="title-page">Dashboard</h1>
