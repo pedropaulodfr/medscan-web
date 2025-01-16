@@ -132,7 +132,7 @@ export const Login = () => {
                 </Col>
               </Form.Group>
               <Form.Group className="mb-3">
-              <Form.Label column sm="4" style={{cursor: "pointer"}} onClick={setIsRecuperarSenha}>Esquecia a senha</Form.Label>
+              <Form.Label column sm="4" style={{cursor: "pointer"}} onClick={setIsRecuperarSenha}>Esqueci a senha</Form.Label>
               </Form.Group>
               <Row className="justify-content-md-center">
                 <Col md="auto">
