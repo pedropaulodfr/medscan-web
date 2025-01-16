@@ -74,6 +74,7 @@ export default function MeuPerfil() {
           throw new Error(result?.response?.data?.message);
 
         showMessage( "Sucesso", "Foto alterada com sucesso!", "success", null);
+        setAtualizarRegistros(true)
         setIsChangeFoto(false)
         setLoading(false);
       })
@@ -104,7 +105,7 @@ export default function MeuPerfil() {
     };
 
     fetchData();
-  }, [isEditarCadastro, setIsEditarCadastro, isChangeFoto, setIsChangeFoto, atualizarRegistros]);
+  }, [isEditarCadastro, setIsEditarCadastro, atualizarRegistros, setAtualizarRegistros]);
 
   return (
     <Container>
@@ -125,8 +126,7 @@ export default function MeuPerfil() {
                   </span>
                 </div>
                 <div className="image-container">
-                  {console.log(setup)}
-                  <Image className="profile-image" src={`${setup?.caminhoArquivos}\\${usuario?.imagemPerfil}`} roundedCircle />
+                  <Image className="profile-image" src={`${isChangeFoto ? "data:image/jpg;base64, " : ""}${usuario?.imagemPerfil}`} roundedCircle />
                   <div className="overlay">
                     <span className="overlay-text" onClick={handleChangeFoto}>Alterar Foto</span>
                   </div>
