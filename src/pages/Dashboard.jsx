@@ -59,7 +59,8 @@ export default function Dashboard() {
         });
         
         api.get("/Dashboard/qntMedicamentosPaciente/").then((result) => {
-          result.data.map(m => {
+          
+          result?.data?.map(m => {
             m.identificacaoFormatada = `${m.identificacao} ${m.concentracao} ${m.unidade}`;
           })
           setDadosQntMedicamentosPaciente(result.data);
@@ -82,10 +83,14 @@ export default function Dashboard() {
   });
 
   const dataQuantidades = [["Medicamento", "Quantidade", { role: "style" }]];
-  dadosEstoqueMedicamentos?.forEach((x, index) => {
-    const style = index % 2 === 0 ? "#4374E0" : "#00C6FF";
-    dataQuantidades.push([x.medicamento, x.quantidade, style])
-  })
+  
+  if(dadosEstoqueMedicamentos.length > 0)
+  {
+    dadosEstoqueMedicamentos?.forEach((x, index) => {
+      const style = index % 2 === 0 ? "#4374E0" : "#00C6FF";
+      dataQuantidades.push([x.medicamento, x.quantidade, style])
+    })
+  }
 
   const [titleModal, setTitleModal] = useState("");
   const [textModal, setTextModal] = useState();
@@ -151,7 +156,7 @@ export default function Dashboard() {
           </Col>
         </Row>
       </Form>
-      {Object.keys(dadosEstoqueMedicamentos).length > 0 &&
+      {dadosEstoqueMedicamentos.length > 0 &&
         <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded" style={{borderRadius: "15px",padding: "20px",}} >
           <Row>
             <h3>Estoque Medicamentos</h3>
