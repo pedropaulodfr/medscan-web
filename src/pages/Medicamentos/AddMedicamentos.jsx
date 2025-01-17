@@ -94,7 +94,7 @@ const AddMedicamentos = ({ handleReturn, dadosEdicao = [] }) => {
     setLoading(true);
     if (Object.keys(dadosEdicao).length == 0) {
       api.post("/Medicamentos/insert", _dadosMedicamentos).then((result) => {
-        if (result.status !== 200) throw new Error("Houve um erro ao tentar cadastrar o medicamento!");
+        if (result.status !== 200) throw new Error(result?.response?.data?.message);
   
         showMessage( "Sucesso", "Medicamento cadastrado com sucesso!", "success", null);
         setLoading(false);
@@ -105,7 +105,7 @@ const AddMedicamentos = ({ handleReturn, dadosEdicao = [] }) => {
       api.put("/Medicamentos/update", _dadosMedicamentos)
         .then((result) => {
           if (result.status !== 200)
-            throw new Error("Houve um erro ao tentar editar o medicamento!");
+            throw new Error(result?.response?.data?.message);
   
           showMessage( "Sucesso", "Medicamento editado com sucesso!", "success", () => {handleReturn()});
           setLoading(false);

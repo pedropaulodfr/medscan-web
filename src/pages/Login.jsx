@@ -96,7 +96,7 @@ export const Login = () => {
               className=""
               style={{  borderRadius: "15px", padding: "20px", backgroundColor: "#d9e9e4dc", color: "#008952" }}
             >
-              <h2>Bem Vindo!</h2>
+              <h2>Bem-vindo(a)!</h2>
               <Form.Group
                 as={Row}
                 className="mb-3"

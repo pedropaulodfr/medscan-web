@@ -24,10 +24,9 @@ import { getSessionCookie } from "../helpers/cookies";
 export default function Dashboard() {
   const api = useApi();
   const [loading, setLoading] = useState(false);
-  const [dadosMedicamentos, setDadosMedicamentos] = useState([]);
-  const [dadosCartaoControle, setDadosCartaoControle] = useState([]);
   const [dadosProximoAoRetorno, setDadosProximoAoRetorno] = useState([]);
   const [dadosEstoqueMedicamentos, setdadosEstoqueMedicamentos] = useState([]);
+  const [dadosQntMedicamentosPaciente, setDadosQntMedicamentosPaciente] = useState([]);
   const [cliqueCard, setCliqueCard] = useState(false);
 
   // Headers do Card Próximos ao Retorno
@@ -45,11 +44,6 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get("/Dashboard/cartaoControle").then((result) => {
-          setDadosCartaoControle(result.data);
-          setLoading(false);
-        });
-        
         api.get(`/Dashboard/proximoRetorno/${getSessionCookie()?.pacienteId}`).then((result) => {
           result?.data?.map(m => {
             m.dataRetornoFormatada = moment(m.dataRetorno).format("DD/MM/YYYY")
@@ -64,11 +58,11 @@ export default function Dashboard() {
           setLoading(false);
         });
         
-        api.get("/Medicamentos/getAll").then((result) => {
+        api.get("/Dashboard/qntMedicamentosPaciente/").then((result) => {
           result.data.map(m => {
             m.identificacaoFormatada = `${m.identificacao} ${m.concentracao} ${m.unidade}`;
           })
-          setDadosMedicamentos(result.data);
+          setDadosQntMedicamentosPaciente(result.data);
           setLoading(false);
         });
       } catch (error) {
@@ -109,7 +103,7 @@ export default function Dashboard() {
       
         case 2:
         _titleModal = "Medicamentos"
-        _textModal = <TabelaListagem headers={headersMedicamentos} itens={dadosMedicamentos} />
+        _textModal = <TabelaListagem headers={headersMedicamentos} itens={dadosQntMedicamentosPaciente} />
         
       default:
         break;
@@ -132,7 +126,7 @@ export default function Dashboard() {
           <Col onClick={() => {ModalElements(1)}}>
             <Cards titleHeader="Próximo ao retorno" text="Clique para ver detalhes" textAlign="center" cursorType="pointer" click={setCliqueCard} >
             <div className="flex flex-col justify-center items-center text-center">
-              <h1>{dadosProximoAoRetorno[0]?.quantidade ?? 0}</h1>
+              <h1>{dadosProximoAoRetorno?.length ?? 0}</h1>
               <span>Clique para ver detalhes</span>
             </div>
             </Cards>
@@ -140,7 +134,7 @@ export default function Dashboard() {
           <Col onClick={() => {ModalElements(2)}}>
             <Cards titleHeader="Quantidade de Medicamentos" textAlign="center" cursorType="pointer" click={setCliqueCard}>
                 <div className="flex flex-col justify-center items-center text-center">
-                  <h1>{dadosMedicamentos?.length ?? 0}</h1>
+                  <h1>{dadosQntMedicamentosPaciente?.length ?? 0}</h1>
                   <span>Clique para ver detalhes</span>
               </div>
             </Cards>

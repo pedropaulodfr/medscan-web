@@ -39,7 +39,8 @@ export default function Medicamentos() {
         if (confirmation) {
           setLoading(true);
           api.delete("/Medicamentos/delete", item.id).then((result) => {
-            if (result.status !== 200) throw new Error("Houve um erro ao tentar deletar o medicamento!");
+            console.log(result?.response?.data?.message)
+            if (result.status !== 200) throw new Error(result?.response?.data?.message);
               
             showMessage( "Sucesso", "Medicamento deletado com sucesso!", "success", null);
             setLoading(false);
