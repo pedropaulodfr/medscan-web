@@ -2,8 +2,8 @@ import axios from 'axios';
 import { getSessionCookie } from '../helpers/cookies';
 
 const api = axios.create({
-    // baseURL: "https://medscan-api.fly.dev"
-    baseURL: "http://localhost:5284"
+    baseURL: "https://medscan-api.fly.dev"
+    // baseURL: "http://localhost:5284"
 });
 
 export const useApi = () => ({
