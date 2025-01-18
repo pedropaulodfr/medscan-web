@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { getSessionCookie } from '../helpers/cookies';
 
+const tenantId = window.location.hostname.split('.')[0];
+
 const api = axios.create({
-    baseURL: "https://medscan-api.fly.dev"
-    //baseURL: "http://localhost:5284"
+    baseURL: tenantId == "localhost" ? "http://localhost:5284" : "https://medscan-api.fly.dev"
 });
 
-const tenantId = window.location.hostname.split('.')[0];
 
 export const useApi = () => ({
     validateToken: async (token) => {
