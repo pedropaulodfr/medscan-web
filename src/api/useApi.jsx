@@ -3,8 +3,10 @@ import { getSessionCookie } from '../helpers/cookies';
 
 const api = axios.create({
     baseURL: "https://medscan-api.fly.dev"
-    // baseURL: "http://localhost:5284"
+    //baseURL: "http://localhost:5284"
 });
+
+const tenantId = window.location.hostname.split('.')[0];
 
 export const useApi = () => ({
     validateToken: async (token) => {
@@ -19,7 +21,11 @@ export const useApi = () => ({
     },
     signin: async (email, senha) => {
         try {
-            const response = await api.post('/login', { email, senha })
+            const response = await api.post('/login', { email, senha }, {
+                headers: {
+                    TenantId: tenantId
+                }
+            })
             .then((result) => {
                 return result
             })
@@ -41,7 +47,8 @@ export const useApi = () => ({
         try {
             const response = await api.get(path, {
                 headers: {
-                    Authorization: `Bearer ${getSessionCookie()?.token}`
+                    Authorization: `Bearer ${getSessionCookie()?.token}`,
+                    TenantId: tenantId
                 }
             });
             return response;
@@ -53,7 +60,8 @@ export const useApi = () => ({
         try {
             const response = await api.post(path, data, {
                 headers: {
-                    Authorization: `Bearer ${getSessionCookie()?.token}`
+                    Authorization: `Bearer ${getSessionCookie()?.token}`,
+                    TenantId: tenantId
                 }
             })
             .then((result) => {
@@ -72,7 +80,8 @@ export const useApi = () => ({
         try {
             const response = await api.delete(`${path}/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${getSessionCookie()?.token}`
+                    Authorization: `Bearer ${getSessionCookie()?.token}`,
+                    TenantId: tenantId
                 }
             })
             .then((result) => {
@@ -91,7 +100,8 @@ export const useApi = () => ({
         try {
             const response = await api.put(path, data, {
                 headers: {
-                    Authorization: `Bearer ${getSessionCookie()?.token}`
+                    Authorization: `Bearer ${getSessionCookie()?.token}`,
+                    TenantId: tenantId
                 }
             })
             .then((result) => {
