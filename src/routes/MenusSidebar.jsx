@@ -8,6 +8,8 @@ import Receituario from "../pages/Receituario/Receituario";
 import Usuarios from "../pages/Usuarios/Usuarios";
 import MeuPerfil from "../pages/MeuPerfil";
 import Pacientes from "../pages/Pacientes/Pacientes";
+import Emails from "../pages/Emails/Emails";
+import SMTP from "../pages/Parametros/SMTP/SMTP";
 
 var menus = [
   {
@@ -86,7 +88,23 @@ var menus = [
         component: TipoMedicamento,
         sidebar: true
       },
+      {
+        path: "/smtp",
+        name: "SMTP",
+        icon: "bi bi-router",
+        modulo: ["Admin"],
+        component: SMTP,
+        sidebar: true
+      },
     ]
+  },
+  {
+    path: "/emails",
+    name: "Emails",
+    icon: "bi bi-envelope-at",
+    modulo: ["Admin"],
+    component: Emails,
+    sidebar: true
   },
   {
     path: "/usuarios",

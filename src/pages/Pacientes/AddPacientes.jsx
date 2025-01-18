@@ -111,8 +111,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
       setLoading(true);
       api.post("/Pacientes/insert", dadosPaciente)
         .then((result) => {
-          if (result.status !== 200)
-            throw new Error(result?.response?.data?.message);
+          if (result.status !== 200) throw new Error(result?.response?.data?.message);
 
           showMessage("Sucesso", "Paciente cadastrado com sucesso!", "success", null);
           setLoading(false);

@@ -171,15 +171,9 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
       setLoading(true);
       api.post("/Receituario/insert", _dadosReceituario)
       .then((result) => {
-          if (result.status !== 200)
-            throw new Error("Houve um erro ao tentar cadastrar o receituário!");
+          if (result.status !== 200) throw new Error(result?.response?.data?.message);  
           
-          showMessage(
-            "Sucesso",
-            "Receituário cadastrado com sucesso!",
-            "success",
-            null
-          );
+          showMessage( "Sucesso", "Receituário cadastrado com sucesso!", "success", null );
           setLoading(false);
           handleLimparCampos();
         })
@@ -192,16 +186,9 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
       api.put("/Receituario/update", _dadosReceituario)
         .then((result) => {
           if (result.status !== 200)
-            throw new Error("Houve um erro ao tentar editar o receituário!");
+            throw new Error(result?.response?.data?.message);  
 
-          showMessage(
-            "Sucesso",
-            "Receituário editado com sucesso!",
-            "success",
-            () => {
-              handleReturn();
-            }
-          );
+          showMessage( "Sucesso", "Receituário editado com sucesso!", "success", () => handleReturn() );
           setLoading(false);
           handleLimparCampos();
         })
