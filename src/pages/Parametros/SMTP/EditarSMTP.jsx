@@ -107,7 +107,7 @@ const EditarSMTP = ({ handleReturn, dadosEdicao = [] }) => {
       <Row className="filtros">
         <Col md="4">
           <Form.Group className="mb-3">
-            <Form.Label>Host</Form.Label>
+          <Form.Label><span className="text-danger">*</span> Host</Form.Label>
             <Form.Control
               type="text"
               placeholder="Host"
