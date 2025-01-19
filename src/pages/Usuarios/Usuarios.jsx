@@ -28,6 +28,7 @@ export default function Usuarios() {
   const headers = [
     { value: "Nome", objectValue: "nome" },
     { value: "Perfil", objectValue: "perfil" },
+    { value: "Master", objectValue: "masterFormatado" },
     { value: "Email", objectValue: "email" },
     { value: "Codigo Cadastro", objectValue: "codigoCadastro" },
     { value: "Status", objectValue: "ativo" },
@@ -39,7 +40,7 @@ export default function Usuarios() {
         if (confirmation) {
           setLoading(true);
           api.delete("/Usuarios/delete", item.id).then((result) => {
-            if (result.status !== 200) throw new Error("Houve um erro ao tentar excluir o usuário!");
+            if (result.status !== 200) throw new Error(result?.response?.data?.message);
               
             showMessage( "Sucesso", "Usuário excluído com sucesso!", "success", null);
             setLoading(false);
@@ -75,6 +76,10 @@ export default function Usuarios() {
       try {
         setLoading(true);
         await api.get("/Usuarios/getAll").then((result) => {
+          result?.data?.map(m => {
+            m.masterFormatado = m.master ? "Sim" : "Não";
+          })
+            
           setdadosUsuarios(result.data);
           set_dadosUsuarios(result.data);
           setLoading(false);

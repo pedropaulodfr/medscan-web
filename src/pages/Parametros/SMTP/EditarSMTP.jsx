@@ -30,9 +30,6 @@ const EditarSMTP = ({ handleReturn, dadosEdicao = [] }) => {
     { nome: "smtpPort", type: "text" },
   ];
 
-  // Status
-  const listaStatus = ["Ativo", "Inativo"]
-
   useEffect(() => {
     if (Object.keys(dadosEdicao).length > 0) {
       setDadosSMTP({
@@ -69,19 +66,19 @@ const EditarSMTP = ({ handleReturn, dadosEdicao = [] }) => {
     }
 
     if(Object.keys(dadosEdicao).length > 0) {
-        setLoading(true);
-        api.put("/Setup/updateSMTP", dadosSMTP)
-        .then((result) => {
-            if (result.status !== 200) throw new Error(result?.response?.data?.message);    
+      setLoading(true);
+      api.put("/Setup/updateSMTP", dadosSMTP)
+      .then((result) => {
+        if (result.status !== 200) throw new Error(result?.response?.data?.message);    
 
-            showMessage( "Sucesso", "SMTP editado com sucesso!", "success", () => {handleReturn()} );
-            setLoading(false);
-            handleLimparCampos();
-        })
-        .catch((err) => {
-            showMessage("Erro", err, "error", null);
-            setLoading(false);
-        });
+        showMessage( "Sucesso", "SMTP editado com sucesso!", "success", () => {handleReturn()} );
+        setLoading(false);
+        handleLimparCampos();
+      })
+      .catch((err) => {
+        showMessage("Erro", err, "error", null);
+        setLoading(false);
+      });
     }
   };
 

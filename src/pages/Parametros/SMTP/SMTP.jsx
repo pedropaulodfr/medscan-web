@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Utils e helpers
@@ -17,8 +16,6 @@ import EditarSMTP from "./EditarSMTP";
 export default function SMTP() {
   const api = useApi();
   const [dadosSMTP, setDadosSMTP] = useState([]);
-  const [_dadosSMTP, set_DadosSMTP] = useState([]);
-  const [isFiltro, setIsFiltro] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editarSMTP, setEditarSMTP] = useState(false);
   const [dadosSMTPEditar, setDadosSMTPEditar] = useState([]);
@@ -36,75 +33,26 @@ export default function SMTP() {
     setEditarSMTP(true);
   };
 
-  const actions = [
-    {
-      icon: "bi bi-pencil-square text-white",
-      color: "warning",
-      action: handleEditar,
-    },
-  ];
-
-  // Filtros
-  const [emailFiltro, setUnidadeFiltro] = useState("");
-
-  const handleEmailChange = (event) => {
-    setUnidadeFiltro(event.target.value);
-  };
+  const actions = [{ icon: "bi bi-pencil-square text-white", color: "warning", action: handleEditar, },];
 
   useEffect(() => {
     setAtualizarTabela(false);
     const fetchData = async () => {
-        try {
+      try {
         setLoading(true);
         api.get("/Setup").then((result) => {
-            result.data.smtpPasswordFormatada = "*".repeat(result.data.smtpPassword.length);
-            console.log(result.data);
-            set_DadosSMTP([result.data]);
-            setDadosSMTP([result.data]);
-            setLoading(false);
+          result.data.smtpPasswordFormatada = "*".repeat(result.data.smtpPassword.length);
+          setDadosSMTP([result.data]);
+          setLoading(false);
         });
-        } catch (error) {
+      } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
         setLoading(false);
-        }
+      }
     };
 
     fetchData();
   }, [atualizarTabela]);
-
-  const handleFiltro = () => {
-    // Resetar os dados para o estado original
-    setDadosSMTP(dadosSMTP);
-
-    // Verificar se algum filtro foi preenchido
-    if (emailFiltro === "") {
-      showMessage("Aviso", "Informe ao menos um dos campos!", "error", null);
-      return;
-    }
-
-    // Criar uma cópia dos dados originais para aplicar os filtros
-    let dadosFiltrados = [...dadosSMTP];
-
-    if (emailFiltro.trim() !== "") {
-      dadosFiltrados = dadosFiltrados.filter((item) =>
-        item.identificacao
-          .toLowerCase()
-          .includes(emailFiltro.trim().toLowerCase())
-      );
-      dadosFiltrados.sort((a, b) => {
-        return a.identificacao - b.identificacao;
-      });
-    }
-
-    setIsFiltro(true);
-    setDadosSMTP(dadosFiltrados);
-  };
-
-  const handleLimparFiltro = () => {
-    setUnidadeFiltro("");
-    setDadosSMTP(_dadosSMTP);
-    setIsFiltro(false);
-  };
 
   const handleReturn = () => {
     setEditarSMTP(false);
@@ -120,26 +68,17 @@ export default function SMTP() {
         </Col>
       </Row>
       {!editarSMTP && (
-        <>
-          <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
-            <Row className="justify-content-center">
-              <Col>
-                <TabelaListagem
-                  headers={headers}
-                  itens={dadosSMTP}
-                  actions={actions}
-                />
-              </Col>
-            </Row>
-          </Form>
-        </>
+        <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
+          <Row className="justify-content-center">
+            <Col>
+              <TabelaListagem headers={headers} itens={dadosSMTP} actions={actions} />
+            </Col>
+          </Row>
+        </Form>
       )}
       {editarSMTP && (
         <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
-          <EditarSMTP
-            handleReturn={handleReturn}
-            dadosEdicao={dadosSMTPEditar}
-          />
+          <EditarSMTP handleReturn={handleReturn} dadosEdicao={dadosSMTPEditar} />
         </Form>
       )}
     </Container>

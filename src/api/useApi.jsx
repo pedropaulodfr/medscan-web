@@ -7,7 +7,6 @@ const api = axios.create({
     baseURL: tenantId == "localhost" ? "http://localhost:5284" : "https://medscan-api.fly.dev"
 });
 
-
 export const useApi = () => ({
     validateToken: async (token) => {
         try {

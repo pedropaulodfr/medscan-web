@@ -18,21 +18,11 @@ const AddUsuarios = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
   const [dadosUsuario, setdadosUsuario] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({
-    identificacao: false,
-  });
+  const [errors, setErrors] = useState({});
   
-  // Estado dos campos
-  const [nome, setNome] = useState(null);
-  const [perfil, setPerfil] = useState("");
-  const [email, setEmail] = useState("");
-  const [codigoCadastro, setCodigoCadastro] = useState("");
-  const [status, setStatus] = useState("");
-
   // Campos a serem validados
   const campos = [
     { nome: "nome", type: "text" },
-    { nome: "perfil", type: "text" },
     { nome: "email", type: "text" },
     { nome: "ativo", type: "text" },
   ];
@@ -49,12 +39,6 @@ const AddUsuarios = ({ handleReturn, dadosEdicao = [] }) => {
 
 useEffect(() => {
     if (Object.keys(dadosEdicao).length > 0) {
-        setNome(dadosEdicao.nome)
-        setPerfil(dadosEdicao.perfil)
-        setEmail(dadosEdicao.email)
-        setCodigoCadastro(dadosEdicao.codigoCadastro)
-        setStatus(dadosEdicao.ativo)
-
         setdadosUsuario({
             ...dadosUsuario,
             id: dadosEdicao.id,
@@ -62,57 +46,21 @@ useEffect(() => {
             perfil: dadosEdicao.perfil,
             email: dadosEdicao.email,
             codigoCadastro: dadosEdicao.codigoCadastro,
-            ativo: dadosEdicao.ativo
+            ativo: dadosEdicao.ativo,
+            master: dadosEdicao.master,
         });
     }
 }, []);
 
-  const handleNomeChange = (event) => {
-    setNome(event.target.value);
+  const handleDadosUsuarioChange = (event, campo) => {
     setdadosUsuario({
       ...dadosUsuario,
-      nome: event.target.value,
-    });
-  };
-
-  const handlePerfilChange = (event) => {
-    setPerfil(event.target.value);
-    setdadosUsuario({
-      ...dadosUsuario,
-      perfil: event.target.value,
-    });
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-    setdadosUsuario({
-      ...dadosUsuario,
-      email: event.target.value,
-    });
-  };
-  
-  const handleCodigoCadastroChange = (event) => {
-    setCodigoCadastro(event.target.value);
-    setdadosUsuario({
-      ...dadosUsuario,
-      codigoCadastro: event.target.value,
-    });
-  };
-  
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-    setdadosUsuario({
-      ...dadosUsuario,
-      ativo: event.target.value,
+      [campo]: event.target.type != "checkbox" ? event.target.value : event.target.checked,
     });
   };
   
   const handleLimparCampos = () => {
-    setNome("")
-    setPerfil("")
-    setEmail("")
-    setCodigoCadastro("")
-    setStatus("")
+    setdadosUsuario({nome: "", email: "", codigoCadastro: "", ativo: false, master: false});
   };
 
   const onSubmit = () => {
@@ -139,34 +87,33 @@ useEffect(() => {
         });
     } else {
       var objUsuario = dadosUsuario;
-      if (dadosEdicao.perfil == "Admin" && novaSenha === confirmarSenha) {
+      objUsuario = {
+        ...dadosUsuario,
+        senha: dadosUsuario?.novaSenha
+      }
+      if (dadosEdicao.perfil == "Admin" && dadosUsuario?.senha === dadosUsuario?.confirmarSenha) {
         objUsuario = {
           ...dadosUsuario,
-          senha: novaSenha
+          senha: dadosUsuario?.novaSenha
         }
-      } else if (dadosEdicao.perfil == "Admin" && novaSenha != "" && confirmarSenha == "") {
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha != "" && dadosUsuario?.confirmarSenha == "") {
         setErrors({confirmarSenha: true})
         return
-      } else if (dadosEdicao.perfil == "Admin" && novaSenha == "" && confirmarSenha != "") {  
-        setErrors({novaSenha: true})
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha == "" && dadosUsuario?.confirmarSenha != "") {  
+        setErrors({senha: true})
         return
-      } else if (dadosEdicao.perfil == "Admin" && novaSenha !== confirmarSenha) {
-        setErrors({novaSenha: true, confirmarSenha: true})
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha != dadosUsuario?.confirmarSenha) {
+        setErrors({senha: true, confirmarSenha: true})
         return
       }
-      
+
       setLoading(true);
       api.put("/Usuarios/update", objUsuario)
         .then((result) => {
           if (result.status !== 200)
             throw new Error(result?.response?.data?.message);
 
-          showMessage(
-            "Sucesso",
-            "Usuário editado com sucesso!",
-            "success",
-            () => handleReturn()
-          );
+          showMessage( "Sucesso", "Usuário editado com sucesso!", "success", () => handleReturn() );
           setLoading(false);
           handleLimparCampos();
         })
@@ -205,21 +152,22 @@ useEffect(() => {
             <Form.Control
               type="text"
               placeholder="Nome"
-              value={nome}
-              onChange={(e) => handleNomeChange(e)}
+              value={dadosUsuario?.nome}
+              onChange={(e) => handleDadosUsuarioChange(e, "nome")}
               isInvalid={!!errors.nome}
             />
           </Form.Group>
         </Col>
         <Col md="4">
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-1">
             <Form.Label>
               <span className="text-danger">*</span> Perfil
             </Form.Label>
             <Form.Select
               aria-label="Default select example"
-              value={perfil}
-              onChange={(e) => handlePerfilChange(e)}
+              value={dadosUsuario?.perfil ?? "Admin"}
+              disabled={true}
+              onChange={(e) => handleDadosUsuarioChange(e, "perfil")}
               isInvalid={!!errors.perfil}
             >
               <option value={0}>Selecione</option>
@@ -228,6 +176,16 @@ useEffect(() => {
               ))}
             </Form.Select>
           </Form.Group>
+          {dadosEdicao.perfil == "Admin" && getSessionCookie()?.perfil == "Admin" && getSessionCookie()?.master == "True" &&
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check 
+                type="checkbox" 
+                label="Master" 
+                checked={dadosUsuario?.master} 
+                onChange={(e) => handleDadosUsuarioChange(e, "master")}
+              />
+            </Form.Group>
+          }
         </Col>
         <Col md="4">
           <Form.Group className="mb-3">
@@ -235,8 +193,8 @@ useEffect(() => {
             <Form.Control
               type="text"
               placeholder="usuario@exemplo.com"
-              value={email}
-              onChange={(e) => handleEmailChange(e)}
+              value={dadosUsuario?.email}
+              onChange={(e) => handleDadosUsuarioChange(e, "email")}
               isInvalid={!!errors.email}
             />
           </Form.Group>
@@ -248,8 +206,8 @@ useEffect(() => {
             <Form.Control
               type="text"
               placeholder="0000"
-              value={codigoCadastro}
-              onChange={(e) => handleCodigoCadastroChange(e)}
+              value={dadosUsuario?.codigoCadastro}
+              onChange={(e) => handleDadosUsuarioChange(e, "codigoCadastro")}
               isInvalid={!!errors.codigoCadastro}
               />
           </Form.Group>
@@ -261,8 +219,8 @@ useEffect(() => {
             </Form.Label>
             <Form.Select
               aria-label="Default select example"
-              value={status}
-              onChange={(e) => handleStatusChange(e)}
+              value={dadosUsuario?.ativo}
+              onChange={(e) => handleDadosUsuarioChange(e, "ativo")}
               isInvalid={!!errors.ativo}
               >
               <option value={""}>Selecione</option>
@@ -283,9 +241,9 @@ useEffect(() => {
                 type="password"
                 placeholder="Nova Senha"
                 autoComplete="off"
-                value={novaSenha}
-                onChange={(e) => setNovaSenha(e.target.value)}
-                isInvalid={!!errors.novaSenha}
+                value={dadosUsuario?.senha}
+              onChange={(e) => handleDadosUsuarioChange(e, "senha")}
+              isInvalid={!!errors.senha}
               />
             </Form.Group>
           </Col>
@@ -296,9 +254,9 @@ useEffect(() => {
                 type="password"
                 placeholder="Confirmar Senha"
                 autoComplete="off"
-                value={confirmarSenha}
-                onChange={(e) => setConfirmarSenha(e.target.value)}
-                isInvalid={!!errors.confirmarSenha}
+                value={dadosUsuario?.confirmarSenha}
+              onChange={(e) => handleDadosUsuarioChange(e, "confirmarSenha")}
+              isInvalid={!!errors.confirmarSenha}
               />
             </Form.Group>
           </Col>
