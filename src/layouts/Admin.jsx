@@ -10,7 +10,7 @@ export default function Admin({ component: Component }) {
     <div className="admin">
       <Sidebar sidebarStatus={setSidebarStatus}></Sidebar>
       <div
-        className={`component-home ${!sidebarStatus ? "sidebar-open" : ""}`}
+        className={`component-home ${!sidebarStatus ? "sidebar-open" : "sidebar-closed"}`}
       >
         <Component />
       </div>
