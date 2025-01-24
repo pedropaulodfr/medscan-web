@@ -33,10 +33,6 @@ const AddUsuarios = ({ handleReturn, dadosEdicao = [] }) => {
   // Status
   const listaStatus = ["Ativo", "Inativo"]
 
-  // Estado dos campos de senha
-  const [novaSenha, setNovaSenha] = useState("")
-  const [confirmarSenha, setConfirmarSenha] = useState("")
-
 useEffect(() => {
     if (Object.keys(dadosEdicao).length > 0) {
         setdadosUsuario({
@@ -60,7 +56,7 @@ useEffect(() => {
   };
   
   const handleLimparCampos = () => {
-    setdadosUsuario({nome: "", email: "", codigoCadastro: "", ativo: false, master: false});
+    setdadosUsuario({nome: "", email: "", codigoCadastro: "", ativo: false, master: false, senha: "", confirmarSenha: ""});
   };
 
   const onSubmit = () => {
@@ -89,24 +85,24 @@ useEffect(() => {
       var objUsuario = dadosUsuario;
       objUsuario = {
         ...dadosUsuario,
-        senha: dadosUsuario?.novaSenha
+        senha: dadosUsuario?.senha
       }
       if (dadosEdicao.perfil == "Admin" && dadosUsuario?.senha === dadosUsuario?.confirmarSenha) {
         objUsuario = {
           ...dadosUsuario,
-          senha: dadosUsuario?.novaSenha
+          senha: dadosUsuario?.senha
         }
-      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha != "" && dadosUsuario?.confirmarSenha == "") {
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.senha != "" && dadosUsuario?.confirmarSenha == "") {
         setErrors({confirmarSenha: true})
         return
-      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha == "" && dadosUsuario?.confirmarSenha != "") {  
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.senha == "" && dadosUsuario?.confirmarSenha != "") {  
         setErrors({senha: true})
         return
-      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.novaSenha != dadosUsuario?.confirmarSenha) {
+      } else if (dadosEdicao.perfil == "Admin" && dadosUsuario?.senha != dadosUsuario?.confirmarSenha) {
         setErrors({senha: true, confirmarSenha: true})
         return
       }
-
+      
       setLoading(true);
       api.put("/Usuarios/update", objUsuario)
         .then((result) => {
