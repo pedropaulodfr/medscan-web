@@ -172,7 +172,10 @@ useEffect(() => {
               ))}
             </Form.Select>
           </Form.Group>
-          {(dadosEdicao?.perfil == "Admin" || dadosUsuario?.perfil == "Admin") && getSessionCookie()?.perfil == "Admin" && getSessionCookie()?.master == "True" &&
+          {console.log(dadosUsuario)}
+          {(dadosEdicao?.perfil == "Admin" || dadosUsuario?.perfil == "Admin" || dadosUsuario?.perfil == undefined)  
+            && getSessionCookie()?.perfil == "Admin" 
+            && getSessionCookie()?.master == "True" &&
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
               <Form.Check 
                 type="checkbox" 
