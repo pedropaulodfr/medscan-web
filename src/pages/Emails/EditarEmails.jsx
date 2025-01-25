@@ -44,7 +44,7 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
     }
   }, []);
 
-  const handleDadosPacienteChange = (event, campo) => {
+  const handleDadosEmailChange = (event, campo) => {
     setDadosEmails({
       ...dadosEmails,
       [campo]: event.target.value,
@@ -52,7 +52,7 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
   };
 
   const handleLimparCampos = () => {
-    setDadosEmails({identificacao: "", titulo: "", descricao: "", corpo: "", perfil: "", status: ""});
+    setDadosEmails({titulo: "", descricao: "", corpo: "", perfil: "", status: ""});
   };
 
   const onSubmit = () => {
@@ -121,7 +121,7 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
               type="text"
               placeholder="Perfil"
               value={dadosEmails?.perfil}
-              onChange={(e) => handleDadosPacienteChange(e, "perfil")}
+              onChange={(e) => handleDadosEmailChange(e, "perfil")}
               isInvalid={!!errors.perfil}
             />
           </Form.Group>
@@ -133,19 +133,19 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
               type="text"
               placeholder="Título"
               value={dadosEmails?.titulo}
-              onChange={(e) => handleDadosPacienteChange(e, "titulo")}
+              onChange={(e) => handleDadosEmailChange(e, "titulo")}
               isInvalid={!!errors.titulo}
             />
           </Form.Group>
         </Col>
         <Col md="4">
           <Form.Group className="mb-3">
-          <Form.Label><span className="text-danger">*</span> Descrição</Form.Label>
+          <Form.Label>Descrição</Form.Label>
             <Form.Control
               type="text"
               placeholder="Descrição"
               value={dadosEmails?.descricao}
-              onChange={(e) => handleDadosPacienteChange(e, "descricao")}
+              onChange={(e) => handleDadosEmailChange(e, "descricao")}
               isInvalid={!!errors.descricao}
             />
           </Form.Group>
@@ -156,7 +156,7 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
             <Form.Select
               aria-label="Default select example"
               value={dadosEmails?.status}
-              onChange={(e) => handleDadosPacienteChange(e, "status")}
+              onChange={(e) => handleDadosEmailChange(e, "status")}
               isInvalid={!!errors.status}
               >
               <option value={""}>Selecione</option>
@@ -172,7 +172,7 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
             <Form.Label><span className="text-danger">*</span> Corpo</Form.Label>
             <Form.Control as="textarea" rows={20} 
                 value={dadosEmails?.corpo}
-                onChange={(e) => handleDadosPacienteChange(e, "corpo")}
+                onChange={(e) => handleDadosEmailChange(e, "corpo")}
                 isInvalid={!!errors.corpo}
             />
         </Form.Group>
