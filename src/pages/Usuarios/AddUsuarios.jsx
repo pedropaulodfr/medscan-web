@@ -172,7 +172,6 @@ useEffect(() => {
               ))}
             </Form.Select>
           </Form.Group>
-          {console.log(dadosUsuario)}
           {(dadosEdicao?.perfil == "Admin" || dadosUsuario?.perfil == "Admin" || dadosUsuario?.perfil == undefined)  
             && getSessionCookie()?.perfil == "Admin" 
             && getSessionCookie()?.master == "True" &&

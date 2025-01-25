@@ -94,8 +94,8 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
 
   const handleMedicamentoChange = (event) => {
     setMedicamentoId(event.target.value);
-    const tipoMedicamentoSelecionado_Id = listaMedicamentos.filter(f => f.id == event.target.value)[0].tipoMedicamentoId
-    setTipoId(tipoMedicamentoSelecionado_Id);
+    const tipoMedicamentoSelecionado_Id = listaMedicamentos.filter(f => f.id == event.target.value)[0]?.tipoMedicamentoId
+    setTipoId(event.target.value != 0 ? tipoMedicamentoSelecionado_Id : 0);
     
     setDadosReceituario({
       ...dadosReceituario,
@@ -262,9 +262,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
               type="text"
               placeholder="dia, semana, mês"
               value={tempo}
-              onChange={(e) => {
-                handleTempoChange(e);
-              }}
+              onChange={(e) => {handleTempoChange(e)}}
               isInvalid={!!errors.tempo}
             />
           </Form.Group>

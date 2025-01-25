@@ -33,6 +33,9 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
   const [quantidade, setQuantidade] = useState(null);
   const [dataRetorno, setDataRetorno] = useState(moment(new Date().setMonth(new Date().getMonth() + 1)).format('YYYY-MM-DD'));
   const [profissional, setProfissional] = useState("");
+  const [tipoId, setTipoId] = useState(0);
+  const [listaTipos, setListaTipos] = useState([]);
+
 
   // Campos a serem validados
   const campos = [
@@ -51,6 +54,11 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
           setListaMedicamentos(dadosOrdenados);
           setLoading(false);
         });
+
+        api.get("/TipoMedicamentos/getAll").then((result) => {
+          setListaTipos(result.data);
+          setLoading(false);
+        });
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
         setLoading(false);
@@ -67,6 +75,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
       setDataRetorno(moment(dadosEdicao.dataRetorno, 'DD/MM/YYYY').format("YYYY-MM-DD"));
       setQuantidade(dadosEdicao.quantidade);
       setProfissional(dadosEdicao.profissional);
+      setTipoId(dadosEdicao.tipoId)
 
       setdadosCartaoControle({
         ...dadosCartaoControle,
@@ -83,6 +92,9 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
 
   const handleMedicamentoChange = (event) => {
     setMedicamentoId(event.target.value);
+    const tipoMedicamentoSelecionado_Id = listaMedicamentos.filter(f => f.id == event.target.value)[0]?.tipoMedicamentoId
+    setTipoId(event.target.value != 0 ? tipoMedicamentoSelecionado_Id : 0);
+
     setdadosCartaoControle({
       ...dadosCartaoControle,
       medicamentoId: event.target.value,
@@ -127,6 +139,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
     setQuantidade("");
     setDataRetorno("");
     setProfissional("");
+    setTipoId(0);
     setdadosCartaoControle({});
   };
 
@@ -242,6 +255,26 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
               onChange={(e) => {handleQuantidadeChange(e)}}
               isInvalid={!!errors.quantidade}
             />
+          </Form.Group>
+        </Col>
+        <Col md="4">
+          <Form.Group className="mb-3">
+            <Form.Label>
+              <span className="text-danger">*</span> Tipo
+            </Form.Label>
+            <Form.Select
+              aria-label="Default select example"
+              value={tipoId}
+              isInvalid={!!errors.tipoMedicamentoId}
+              disabled={true}
+              >
+              <option value={0}>Selecione</option>
+              {listaTipos?.map((m, index) => (
+                <option key={index} value={m.id}>
+                  {m.identificacao}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
         </Col>
         <Col md="4">
