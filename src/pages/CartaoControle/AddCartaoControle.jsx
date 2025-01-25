@@ -40,7 +40,6 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
     { nome: "quantidade", type: "number" },
     { nome: "medicamentoId", type: "number" },
     { nome: "dataRetorno", type: "text" },
-    { nome: "profissional", type: "text" },
   ];
 
   useEffect(() => {
@@ -259,9 +258,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
         </Col>
         <Col md="4">
           <Form.Group className="mb-3">
-            <Form.Label>
-              <span className="text-danger">*</span> Profissional
-            </Form.Label>
+            <Form.Label>Profissional</Form.Label>
             <Form.Control
               type="text"
               placeholder="Profissional"
