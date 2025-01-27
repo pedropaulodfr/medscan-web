@@ -49,7 +49,9 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get("/Medicamentos/getAll").then((result) => {
+        api.get("/Medicamentos/getMedicamentosReceituario/").then((result) => {
+          console.log(result.data);
+          
           const dadosOrdenados = result.data.sort((a, b) => a.identificacao.localeCompare(b.identificacao));
           setListaMedicamentos(dadosOrdenados);
           setLoading(false);
