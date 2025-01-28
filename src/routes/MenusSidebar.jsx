@@ -10,6 +10,7 @@ import MeuPerfil from "../pages/MeuPerfil";
 import Pacientes from "../pages/Pacientes/Pacientes";
 import Emails from "../pages/Emails/Emails";
 import SMTP from "../pages/Parametros/SMTP/SMTP";
+import Setup from "../pages/Setup";
 
 var menus = [
   {
@@ -68,7 +69,7 @@ var menus = [
   },
   {
     name: "Parâmetros",
-    icon: "bi bi-gear",
+    icon: "bi bi-sliders",
     modulo: ["Admin"],
     sidebar: true,
     submenus: [
@@ -112,6 +113,14 @@ var menus = [
     icon: "bi bi-people",
     modulo: ["Admin"],
     component: Usuarios,
+    sidebar: true
+  },
+  {
+    path: "/setup",
+    name: "Setup",
+    icon: "bi bi-gear",
+    modulo: ["Admin"],
+    component: Setup,
     sidebar: true
   },
   {

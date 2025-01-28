@@ -8,6 +8,7 @@ import "./Sidebar.css";
 import Loading from "../Loading/Loading";
 import Logo from "../../assets/medscan-min-white.png";
 import { getSessionCookie } from "../../helpers/cookies";
+import { Container, Row } from "react-bootstrap";
 
 function Sidebar({ sidebarStatus }) {
   const auth = useAuth();
@@ -46,10 +47,10 @@ function Sidebar({ sidebarStatus }) {
   };
 
   return (
-    <div className="container-fluid col-auto" style={{height: "100%"}}>
+    <Container className="container-fluid col-auto" style={{height: "100%"}}>
       {loading && <Loading />}
       {!sidebarClose ? (
-        <div className="row" style={{height: "100%"}}>
+        <Row  style={{height: "100%"}}>
           <div
             className="col-auto min-vh-100 d-flex justify-content-between flex-column"
             style={{ backgroundColor: "#008952", height: "100%" }}
@@ -166,7 +167,7 @@ function Sidebar({ sidebarStatus }) {
               </div>
             </div>
           </div>
-        </div>
+        </Row>
       ) : (
         <div>
           <i
@@ -176,7 +177,7 @@ function Sidebar({ sidebarStatus }) {
           ></i>
         </div>
       )}
-    </div>
+    </Container>
   );
 }
 
