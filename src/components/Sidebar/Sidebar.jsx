@@ -172,7 +172,7 @@ function Sidebar({ sidebarStatus }) {
         <div>
           <i
             className="bi bi-list"
-            style={{ fontSize: "2em", color: "#fff", cursor: "pointer" }}
+            style={{ fontSize: "2em", color: "#50BF84", cursor: "pointer" }}
             onClick={handleSidebarStatus}
           ></i>
         </div>

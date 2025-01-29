@@ -14,4 +14,8 @@
   .sidebar-open {
     padding-left: 120px;
   }
+
+  .sidebar-closed {
+    padding-left: 1em;
+  }
 }
