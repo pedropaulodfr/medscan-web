@@ -50,8 +50,8 @@ const Setup = () => {
 
   const handleLimparCampos = () => {
     setDadosSetup({
-        URLWeb: "",
-        URLApi: "",
+        urlweb: "",
+        urlapi: "",
         caminhoArquivos: "",
         diasNotificacaoRetorno: "",
         usarCodigoCadastro: false
