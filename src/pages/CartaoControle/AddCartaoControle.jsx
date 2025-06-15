@@ -52,7 +52,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
         api.get("/Medicamentos/getMedicamentosReceituario/").then((result) => {
           console.log(result.data);
           
-          const dadosOrdenados = result.data.sort((a, b) => a.identificacao.localeCompare(b.identificacao));
+          const dadosOrdenados = result.data?.sort((a, b) => a.identificacao.localeCompare(b.identificacao));
           setListaMedicamentos(dadosOrdenados);
           setLoading(false);
         });

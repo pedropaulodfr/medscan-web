@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
 import { useApi } from "../../api/useApi";
 import { getSessionCookie, setSessionCookie } from "../../helpers/cookies";
 
@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const storageData = getSessionCookie()?.token;
     return !!storageData; // Definir isLoggedIn com base na presença do token no localStorage
   });
+  const [userAcesso, setUserAcesso] = useState([])
 
   const [setup, setSetup] = useState({}); // Dados do setup
   const api = useApi();
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     validateToken();
   }, []);
 
-  const login = async (email, senha) => {
+  const login = useCallback(async (email, senha) => {
     const response = await api.signin(email, senha)
       .then((result) => {
         return result;
@@ -41,13 +42,16 @@ export const AuthProvider = ({ children }) => {
       
       if (response.data?.usuarioId && response.data?.token) {
         setToken(response.data)
+        setUserAcesso(response.data)
+        console.log("response.data", response.data);
+        
         setIsLoggedIn(true)
         await loadSetup();
         return { success: true, statusCode: response.status }
       }
     setIsLoggedIn(false)
     return { success: false, statusCode: 500 }
-  };
+  }, [setIsLoggedIn])
   
 
   const logout = async () => {
@@ -73,10 +77,12 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, setup }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, setup, userAcesso }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext
 
 export const useAuth = () => useContext(AuthContext);

@@ -103,7 +103,7 @@ export default function TipoMedicamento() {
           .toLowerCase()
           .includes(unidadeFiltro.trim().toLowerCase())
       );
-      dadosFiltrados.sort((a, b) => {
+      dadosFiltrados?.sort((a, b) => {
         return a.identificacao - b.identificacao;
       });
     }

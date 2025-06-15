@@ -5,7 +5,6 @@ import moment from "moment";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Utils e helpers
@@ -20,6 +19,7 @@ import Modals from "../components/Modals/Modals";
 import TabelaListagem from "../components/TabelaListagem/TabelaListagem";
 import { useApi } from "../api/useApi";
 import { getSessionCookie } from "../helpers/cookies";
+import CalendarioMaior from "../components/Graficos/CalendarioMaior/CalendarioMaior";
 
 export default function Dashboard() {
   const api = useApi();
@@ -78,8 +78,13 @@ export default function Dashboard() {
   // Data de retorno dos medicamentos
   const data = []
   dadosProximoAoRetorno?.forEach((dr) => {
-    const date = moment(dr.dataRetorno).format("YYYY, MM, DD")
-    data.push([new Date(date), dr.quantidade]);
+    const date = moment(dr.dataRetorno);
+    data.push({
+      "title": dr.medicamento,
+      "allDay": true,
+      "start": new Date(date.year(), date.month(), date.date()),
+      "end": new Date(date.year(), date.month(), date.date())
+    });
   });
 
   const dataQuantidades = [["Medicamento", "Quantidade", { role: "style" }]];
@@ -152,7 +157,7 @@ export default function Dashboard() {
         </Row>
         <Row>
           <Col>
-            <Calendario data={data} />
+            <CalendarioMaior events={data} />
           </Col>
         </Row>
       </Form>

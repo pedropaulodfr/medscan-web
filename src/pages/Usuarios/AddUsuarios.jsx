@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -13,13 +13,16 @@ import { showMessage } from "../../helpers/message";
 import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
 import { getSessionCookie } from "../../helpers/cookies";
+import AuthContext from "../../contexts/Auth/AuthContext"; // Importe o AuthContext
+
 
 const AddUsuarios = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
   const [dadosUsuario, setdadosUsuario] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  
+  const { userAcesso } = useContext(AuthContext); 
+
   // Campos a serem validados
   const campos = [
     { nome: "nome", type: "text" },
