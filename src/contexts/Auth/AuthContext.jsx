@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [userAcesso, setUserAcesso] = useState([])
 
   const [setup, setSetup] = useState({}); // Dados do setup
+  const [notificacoes, setNotificacoes] = useState({}); // Dados das notificações
   const api = useApi();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }) => {
         if (data.user) {
           setIsLoggedIn(true);
           await loadSetup();
+          await loadNotificacoesNaoLidas();
         } else {
           logout()
         }
@@ -43,7 +45,6 @@ export const AuthProvider = ({ children }) => {
       if (response.data?.usuarioId && response.data?.token) {
         setToken(response.data)
         setUserAcesso(response.data)
-        console.log("response.data", response.data);
         
         setIsLoggedIn(true)
         await loadSetup();
@@ -75,9 +76,19 @@ export const AuthProvider = ({ children }) => {
         return error;
       });
   }
+  
+  const loadNotificacoesNaoLidas = async () => {
+    await api.get(`/Notificacoes/getAllNotificacoes`)
+      .then((result) => {
+        setNotificacoes(result.data.filter((notificacao) => notificacao.lido == false));
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, setup, userAcesso }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, setup, notificacoes, userAcesso }}>
       {children}
     </AuthContext.Provider>
   );

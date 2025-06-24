@@ -11,6 +11,7 @@ import Pacientes from "../pages/Pacientes/Pacientes";
 import Emails from "../pages/Emails/Emails";
 import SMTP from "../pages/Parametros/SMTP/SMTP";
 import Setup from "../pages/Setup";
+import Notificacoes from "../pages/Notificacoes";
 
 var menus = [
   {
@@ -26,6 +27,14 @@ var menus = [
     modulo: ["Paciente"],
     icon: "bi bi-ui-checks-grid",
     component: Dashboard,
+    sidebar: true
+  },
+  {
+    path: "/notificacoes",
+    name: "Notificações",
+    icon: "bi bi-chat-left",
+    modulo: ["Paciente"],
+    component: Notificacoes,
     sidebar: true
   },
   {

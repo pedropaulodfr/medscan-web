@@ -80,7 +80,7 @@ function Sidebar({ sidebarStatus }) {
                               className="nav-link text-white fs-5"
                               aria-current="page"
                             >
-                              <i className={menu.icon}></i>
+                              {menu.name == "Notificações" && auth?.notificacoes.length > 0 ? <i className="bi bi-chat-left-text-fill" ></i>: <i className={menu.icon}></i>}
                               <span className="ms-3 d-none d-sm-inline">
                                 {menu.name}
                               </span>
