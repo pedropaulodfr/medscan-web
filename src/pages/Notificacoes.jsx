@@ -65,35 +65,66 @@ const Notificacoes = () => {
         </Col>
       </Row>
       <Container className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
-        <Row>
-          <Col md>
-            <h4>{"Notificações"}</h4>
-          </Col>
-        </Row>
+        
         <Row className="filtros">
-          <Col md="4">
-            {dadosNotificacoes?.map((notificacao, index) => {
-                return (
-                    <Accordion defaultActiveKey="0">
-                        <Accordion.Item eventKey={index} onClick={() => onSubmit(notificacao.notificacao_Id)}>
-                            <Accordion.Header>
-                                <div style={{fontWeight: notificacao.lido != true ? "bold" : "normal"}}>
-                                    {notificacao.lido != true 
-                                        ? <i class="bi bi-exclamation-circle me-3" style={{color: "orange"}}></i> 
-                                        : <i class="bi bi-check-lg me-3" style={{color: "green"}}></i>
-                                    } 
+          <Col md="6">
+            <Row>
+              <Col md>
+                <h4>{"Não lidas"}</h4>
+              </Col>
+            </Row>
+            <Row>
+              {dadosNotificacoes?.filter(f => f.lido != true)?.map((notificacao, index) => {
+                  return (
+                      <Accordion defaultActiveKey="0">
+                          <Accordion.Item eventKey={index} onClick={() => onSubmit(notificacao.notificacao_Id)}>
+                              <Accordion.Header>
+                                  <div style={{fontWeight: "bold"}}> 
+                                    <i class="bi bi-exclamation-circle me-3" style={{color: "orange"}}></i> 
                                     📆{moment(notificacao.data).format("DD/MM/YYYY")} - {notificacao.titulo}
-                                </div>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <p>A data de retorno do seu medicamento está próxima.</p>
-                                <p>💊 <b>Medicamento:</b> {notificacao.medicamento} <br></br></p>
-                                 <p><small>Para mais detalhes, verifique o dashboard!</small></p>
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
-                )
-            })}
+                                  </div>
+                              </Accordion.Header>
+                              <Accordion.Body>
+                                  <p>A data de retorno do seu medicamento está próxima.</p>
+                                  <p>💊 <b>Medicamento:</b> {notificacao.medicamento} <br></br></p>
+                                  <p><small>Para mais detalhes, verifique o dashboard!</small></p>
+                              </Accordion.Body>
+                          </Accordion.Item>
+                      </Accordion>
+                  )
+              })}
+            </Row>
+          </Col>
+          <Col md="6">
+          <Row>
+              <Col md>
+                <h4>{"Todas"}</h4>
+              </Col>
+            </Row>
+            <Row>
+              {dadosNotificacoes?.map((notificacao, index) => {
+                  return (
+                      <Accordion defaultActiveKey="0">
+                          <Accordion.Item eventKey={index} onClick={notificacao.lido != true ? () => onSubmit(notificacao.notificacao_Id) : null}>
+                              <Accordion.Header>
+                                  <div style={{fontWeight: notificacao.lido != true ? "bold" : "normal"}}>
+                                      {notificacao.lido != true 
+                                          ? <i class="bi bi-exclamation-circle me-3" style={{color: "orange"}}></i> 
+                                          : <i class="bi bi-check-lg me-3" style={{color: "green"}}></i>
+                                      } 
+                                      📆{moment(notificacao.data).format("DD/MM/YYYY")} - {notificacao.titulo}
+                                  </div>
+                              </Accordion.Header>
+                              <Accordion.Body>
+                                  <p>A data de retorno do seu medicamento está próxima.</p>
+                                  <p>💊 <b>Medicamento:</b> {notificacao.medicamento} <br></br></p>
+                                  <p><small>Para mais detalhes, verifique o dashboard!</small></p>
+                              </Accordion.Body>
+                          </Accordion.Item>
+                      </Accordion>
+                  )
+              })}
+            </Row>
           </Col>
         </Row>
       </Container>
