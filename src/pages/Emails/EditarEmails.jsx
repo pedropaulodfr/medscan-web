@@ -12,6 +12,7 @@ import Loading from "../../components/Loading/Loading";
 import { ValidaCampos } from "../../helpers/validacoes";
 import { showMessage } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
+import ListaVariaveis from "./ListaVariaveis";
 
 const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
@@ -166,6 +167,9 @@ const EditarEmails = ({ handleReturn, dadosEdicao = [] }) => {
             </Form.Select>
           </Form.Group>
         </Col>
+      </Row>
+      <Row className="mt-3 mb-3">
+        <ListaVariaveis />
       </Row>
       <Row>
         <Form.Group className="mb-3">
