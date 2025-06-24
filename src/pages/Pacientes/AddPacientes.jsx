@@ -72,6 +72,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
             nomeCompleto: dadosEdicao.nomeCompleto,
             cpf: dadosEdicao.cpf,
             email: dadosEdicao.email,
+            email2: dadosEdicao.email2,
             dataNascimento: moment(dadosEdicao.dataNascimento).format("YYYY-MM-DD") ,
             logradouro: dadosEdicao.logradouro,
             numero: dadosEdicao.numero,
@@ -95,7 +96,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
   };
 
   const handleLimparCampos = () => {
-    setDadosPaciente({nome: "", nomeCompleto: "", cpf: "", email: "", dataNascimento: "", logradouro: "", numero: "", complemento: "",
+    setDadosPaciente({nome: "", nomeCompleto: "", cpf: "", email: "", email2: "", dataNascimento: "", logradouro: "", numero: "", complemento: "",
       bairro: "", cidade: "", uf: "", cep: "", cns: "", planoSaude: "", });
   };
 
@@ -240,6 +241,18 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
               value={dadosPaciente?.email}
               onChange={(e) => handleDadosPacienteChange(e, "email")}
               isInvalid={!!errors.email}
+            />
+          </Form.Group>
+        </Col>
+        <Col md="4">
+          <Form.Group className="mb-3">
+            <Form.Label>E-mail Alternativo</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="usuario@exemplo.com"
+              value={dadosPaciente?.email2}
+              onChange={(e) => handleDadosPacienteChange(e, "email2")}
+              isInvalid={!!errors.email2}
             />
           </Form.Group>
         </Col>

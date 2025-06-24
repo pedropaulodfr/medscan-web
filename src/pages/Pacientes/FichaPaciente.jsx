@@ -27,6 +27,9 @@ export default function FichaPaciente( { dados = [] } ) {
                 <span className="fw-semibold">E-mail:</span> <span>{dadosUsuario?.paciente?.email}</span>
             </Col>
             <Col lg="4" sm="12">
+                <span className="fw-semibold">E-mail2:</span> <span>{dadosUsuario?.paciente?.email2}</span>
+            </Col>
+            <Col lg="4" sm="12">
                 <span className="fw-semibold">Endereço:</span> <span>{dadosUsuario?.paciente?.endereco}</span>
             </Col>
             <Col lg="4" sm="12">
