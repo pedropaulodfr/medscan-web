@@ -12,6 +12,7 @@ import Emails from "../pages/Emails/Emails";
 import SMTP from "../pages/Parametros/SMTP/SMTP";
 import Setup from "../pages/Setup";
 import Notificacoes from "../pages/Notificacoes";
+import RelatorioMedicamentos from "../pages/reports/RelatorioMedicamentos";
 
 var menus = [
   {
@@ -62,10 +63,11 @@ var menus = [
     sidebar: true
   },
   {
-    path: "/home",
+    path: "/relatorios",
     name: "Relatórios",
     icon: "bi bi-clipboard2-pulse",
-    component: CartaoControle,
+    modulo: ["Admin"],
+    component: RelatorioMedicamentos,
     sidebar: true
   },
   {
