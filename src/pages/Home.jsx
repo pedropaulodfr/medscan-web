@@ -1,13 +1,15 @@
-import React from "react";
+import {  useContext  } from "react";
 import Logotipo from "../assets/medscan-logo-verde.png";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { getSessionCookie } from "../helpers/cookies";
+import AuthContext from "../contexts/Auth/AuthContext";
 
 export default function Home() {
+  const { userAcesso } = useContext(AuthContext);
+
   const handleCard = (route) => {
     window.location.href = `/${route}`;
   };
@@ -52,7 +54,7 @@ export default function Home() {
           <h4 style={{ color: "#00C7E9" }}>O que deseja fazer?</h4>
         </Col>
       </Row>
-      {getSessionCookie()?.perfil != "Admin" &&
+      {userAcesso?.perfil != "Admin" &&
         <Row className="justify-content-md-center">
           <Col md="auto">
             <Button variant="outline-success" className="m-2 mt-0.5" onClick={() => {handleCard("dashboard")}}>
@@ -64,7 +66,7 @@ export default function Home() {
           </Col>
         </Row>
       }
-      {getSessionCookie()?.perfil == "Admin" &&
+      {userAcesso?.perfil == "Admin" &&
         <Row className="justify-content-md-center">
           <Col md="auto">
             <Button variant="outline-success" className="m-2 mt-0.5" onClick={() => {handleCard("pacientes")}}>

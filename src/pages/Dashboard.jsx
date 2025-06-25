@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
 
 // Bootstrap
@@ -12,17 +12,17 @@ import Loading from "../components/Loading/Loading";
 import { showMessage } from "../helpers/message";
 
 // Importar Componentes
-import { Calendario } from "../components/Graficos/Calendario/Calendario";
 import { Colunas } from "../components/Graficos/Colunas/Colunas";
 import Cards from "../components/Cards/Cards";
 import Modals from "../components/Modals/Modals";
 import TabelaListagem from "../components/TabelaListagem/TabelaListagem";
 import { useApi } from "../api/useApi";
-import { getSessionCookie } from "../helpers/cookies";
+import AuthContext from "../contexts/Auth/AuthContext";
 import CalendarioMaior from "../components/Graficos/CalendarioMaior/CalendarioMaior";
 
 export default function Dashboard() {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [dadosProximoAoRetorno, setDadosProximoAoRetorno] = useState([]);
   const [dadosEstoqueMedicamentos, setdadosEstoqueMedicamentos] = useState([]);
@@ -44,7 +44,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get(`/Dashboard/proximoRetorno/${getSessionCookie()?.pacienteId}`).then((result) => {
+        api.get(`/Dashboard/proximoRetorno/${userAcesso?.pacienteId}`).then((result) => {
           result?.data?.map(m => {
             m.dataRetornoFormatada = moment(m.dataRetorno).format("DD/MM/YYYY")
           })
@@ -53,7 +53,7 @@ export default function Dashboard() {
           setLoading(false);
         });
         
-        api.get(`/Dashboard/estoqueMedicamentos/${getSessionCookie()?.pacienteId}`).then((result) => {
+        api.get(`/Dashboard/estoqueMedicamentos/${userAcesso?.pacienteId}`).then((result) => {
           setdadosEstoqueMedicamentos(result.data);
           setLoading(false);
         });

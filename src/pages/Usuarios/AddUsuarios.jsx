@@ -12,9 +12,7 @@ import Loading from "../../components/Loading/Loading";
 import { showMessage } from "../../helpers/message";
 import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
-import { getSessionCookie } from "../../helpers/cookies";
 import AuthContext from "../../contexts/Auth/AuthContext"; // Importe o AuthContext
-
 
 const AddUsuarios = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
@@ -176,8 +174,8 @@ useEffect(() => {
             </Form.Select>
           </Form.Group>
           {(dadosEdicao?.perfil == "Admin" || dadosUsuario?.perfil == "Admin" || dadosUsuario?.perfil == undefined)  
-            && getSessionCookie()?.perfil == "Admin" 
-            && getSessionCookie()?.master == "True" &&
+            && userAcesso?.perfil == "Admin" 
+            && userAcesso?.master == true &&
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
               <Form.Check 
                 type="checkbox" 
@@ -231,7 +229,7 @@ useEffect(() => {
             </Form.Select>
           </Form.Group>
         </Col>
-        {getSessionCookie()?.perfil == "Admin" && getSessionCookie()?.usuarioId == dadosEdicao?.id &&
+        {userAcesso?.perfil == "Admin" && userAcesso?.usuarioId == dadosEdicao?.id &&
         <Row>
         <hr className="text-black d-none d-sm-block m-2" />
         <span className="fw-bold mb-2">Senha de Acesso</span>

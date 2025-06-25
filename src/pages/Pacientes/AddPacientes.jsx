@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -14,10 +14,11 @@ import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
 import moment from "moment";
 import { InputCEP, InputCPF } from "../../helpers/mask";
-import { getSessionCookie } from "../../helpers/cookies";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
 const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
   const [dadosPaciente, setDadosPaciente] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -379,7 +380,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
           </Form.Group>
         </Col>
       </Row>
-      {getSessionCookie()?.perfil == "Paciente" &&
+      {userAcesso?.perfil == "Paciente" &&
         <Row>
         <hr className="text-black d-none d-sm-block m-2" />
         <span className="fw-bold mb-2">Senha de Acesso</span>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
 
 // Bootstrap
@@ -13,10 +13,12 @@ import Loading from "../../components/Loading/Loading";
 import { showMessage } from "../../helpers/message";
 import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
-import { getSessionCookie } from "../../helpers/cookies";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
 const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
+
   const [dadosCartaoControle, setdadosCartaoControle] = useState({
     data: moment().format('YYYY-MM-DD'),
     dataRetorno: moment(new Date().setMonth(new Date().getMonth() + 1)).format('YYYY-MM-DD')
@@ -85,7 +87,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
         dataRetorno: moment(dadosEdicao.dataRetorno, 'DD/MM/YYYY').format("YYYY-MM-DD"),
         quantidade: dadosEdicao.quantidade,
         profissional: dadosEdicao.profissional,
-        usuarioId: getSessionCookie()?.usuarioId
+        usuarioId: userAcesso?.usuarioId
       });
     }
   }, []);
@@ -152,7 +154,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosCartaoControle = {
       ...dadosCartaoControle,
-      usuarioId: getSessionCookie()?.usuarioId
+      usuarioId: userAcesso?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {

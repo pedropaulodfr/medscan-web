@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import CloseButton from "react-bootstrap/CloseButton";
 import Accordion from "react-bootstrap/Accordion";
 import menus from "../../routes/MenusSidebar";
@@ -7,11 +7,13 @@ import { useAuth } from "../../contexts/Auth/AuthContext";
 import "./Sidebar.css";
 import Loading from "../Loading/Loading";
 import Logo from "../../assets/medscan-min-white.png";
-import { getSessionCookie } from "../../helpers/cookies";
 import { Container, Row } from "react-bootstrap";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
 function Sidebar({ sidebarStatus }) {
   const auth = useAuth();
+  
+  const { userAcesso } = useContext(AuthContext);
 
   const [sidebarClose, setSidebarClose] = useState(false);
 
@@ -72,7 +74,7 @@ function Sidebar({ sidebarStatus }) {
                 <ul className="nav nav-pills flex-column mt-3 mt-sm-0">
                   {menus.map((menu, key) => {
                     if (!menu.submenus) {
-                      if (menu?.sidebar && (!menu.modulo || menu?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0)) {
+                      if (menu?.sidebar && (!menu.modulo || menu?.modulo?.filter(f => f == userAcesso?.perfil).length > 0)) {
                         return (
                           <li key={key} className="nav-item text-while fs-4 my-1 py-2 py-sm-0">
                             <a
@@ -89,7 +91,7 @@ function Sidebar({ sidebarStatus }) {
                         );
                       }
                     } else {
-                      if (menu?.sidebar && (!menu.modulo || menu?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0)) {
+                      if (menu?.sidebar && (!menu.modulo || menu?.modulo?.filter(f => f == userAcesso?.perfil).length > 0)) {
                         return (
                           <Accordion
                             key={key}
@@ -108,7 +110,7 @@ function Sidebar({ sidebarStatus }) {
                               </Accordion.Header>
                               <Accordion.Body>
                                 {menu.submenus.map((submenu, key) => {
-                                  if (submenu?.sidebar && (!submenu.modulo || submenu?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0)) {
+                                  if (submenu?.sidebar && (!submenu.modulo || submenu?.modulo?.filter(f => f == userAcesso?.perfil).length > 0)) {
                                     return (
                                       <li key={key} className="nav-item text-while fs-4 my-1 py-2 py-sm-0">
                                         <a
@@ -150,7 +152,7 @@ function Sidebar({ sidebarStatus }) {
               <div className="dropdown-menu item" aria-labelledby="triggerId">
                 {true ? (
                   <>
-                    <span className="ms-3 d-none d-sm-inline fw-semibold">{getSessionCookie()?.nome}</span>
+                    <span className="ms-3 d-none d-sm-inline fw-semibold">{userAcesso?.nome}</span>
                     <hr className="text-black d-none d-sm-block m-2" />
                     <a className="dropdown-item" href="meu-perfil">
                       Perfil

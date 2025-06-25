@@ -12,7 +12,11 @@ export const useApi = () => ({
         try {
             const response = await api.post('/validate', { token });
             return {
-                user: {username : response.data.username, email: response.data.email}
+                user: {
+                    ...response.data,
+                    username : response.data.username, 
+                    email: response.data.email,
+                }
             };
         } catch (error) {
             return error

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useContext } from 'react';
 import './App.css';
 import PrivateRoutes from './routes/PrivateRoutes';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,9 +13,11 @@ import Admin from './layouts/Admin'
 import menus from './routes/MenusSidebar';
 import { Login } from './pages/Login';
 import RequireAuth from './contexts/Auth/RequireAuth';
-import { getSessionCookie } from './helpers/cookies';
+import AuthContext from './contexts/Auth/AuthContext';
 
 function App() {
+  const { userAcesso } = useContext(AuthContext);
+
   return (
     <div className="App">
       <Router>
@@ -22,7 +25,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             {menus.map((menu, key) => {
               if(!menu.submenus) {
-                if (!(!menu.modulo || menu?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0))
+                if (!(!menu.modulo || menu?.modulo?.filter(f => f == userAcesso?.perfil).length > 0))
                   return
                 return (
                   <Route
@@ -32,7 +35,7 @@ function App() {
                   />
                 )
               } else {
-                if (!(!menu.submenus.modulo || menu?.submenus?.modulo?.filter(f => f == getSessionCookie()?.perfil).length > 0))
+                if (!(!menu.submenus.modulo || menu?.submenus?.modulo?.filter(f => f == userAcesso?.perfil).length > 0))
                   return
                 return menu.submenus.map((submenu, subKey) => (
                   <Route

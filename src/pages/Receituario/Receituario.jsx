@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -13,10 +13,11 @@ import Loading from "../../components/Loading/Loading";
 import { showMessage, showQuestion } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
 import AddReceituarios from "./AddReceituario";
-import { getSessionCookie } from "../../helpers/cookies";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
 export default function Receituario() {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
   const [dadosReceituario, setDadosReceituario] = useState([]);
   const [_dadosReceituario, set_DadosReceituario] = useState([]);
   const [isFiltro, setIsFiltro] = useState(false);
@@ -73,7 +74,7 @@ export default function Receituario() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await api.get(`/Receituario/get/${getSessionCookie()?.pacienteId}`).then((result) => {
+        await api.get(`/Receituario/get/${userAcesso?.pacienteId}`).then((result) => {
           result.data.map(m => {
             m.medicamentoFormatado = `${m.medicamento.identificacao} ${m.medicamento.concentracao} ${m.medicamento.unidade}`;
             m.doseFormatada = `${m.dose} ${m.medicamento.tipoMedicamento}`;

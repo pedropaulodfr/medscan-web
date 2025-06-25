@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import moment from "moment";
+import { useState, useEffect, useRef, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -15,8 +14,7 @@ import { showMessage } from "../helpers/message";
 
 // Importar Componentes
 import { useApi } from "../api/useApi";
-import { useAuth } from "../contexts/Auth/AuthContext";
-import { getSessionCookie } from "../helpers/cookies";
+import AuthContext from "../contexts/Auth/AuthContext";
 import FichaPaciente from "./Pacientes/FichaPaciente";
 import AddPacientes from "./Pacientes/AddPacientes";
 import FichaUsuario from "./Usuarios/FichaUsuario";
@@ -24,7 +22,7 @@ import AddUsuarios from "./Usuarios/AddUsuarios";
 
 export default function MeuPerfil() {
   const api = useApi();
-  const { setup } = useAuth();
+  const { userAcesso } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [usuario, setUsuario] = useState([])
   const [isChangeFoto, setIsChangeFoto] = useState(false)
@@ -88,16 +86,17 @@ export default function MeuPerfil() {
     setAtualizarRegistros(false)
     const fetchData = async () => {
       try {
-        
         setLoading(true);
         setUsuario({});
-        api.get(`/Usuarios/get/${getSessionCookie().usuarioId}`).then((result) => {
-            if (result.data.perfil == "Paciente") {
+        api.get(`/Usuarios/get/${userAcesso?.usuarioId}`).then((result) => {
+            if (result.data?.perfil == "Paciente") {
               result.data.paciente.usuarios = result.data
             }
             setUsuario(result.data);
             setLoading(false);
-          });
+        });
+
+
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
         setLoading(false);
@@ -105,7 +104,7 @@ export default function MeuPerfil() {
     };
 
     fetchData();
-  }, [isEditarCadastro, setIsEditarCadastro, atualizarRegistros, setAtualizarRegistros]);
+  }, [userAcesso, isEditarCadastro, setIsEditarCadastro, atualizarRegistros, setAtualizarRegistros]);
 
   return (
     <Container>

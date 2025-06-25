@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
 
 // Bootstrap
@@ -13,11 +13,12 @@ import Form from "react-bootstrap/Form";
 import Loading from "../../components/Loading/Loading";
 import { showMessage, showQuestion } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
+import AuthContext from "../../contexts/Auth/AuthContext";
 import AddCartaoControle from "./AddCartaoControle.jsx";
-import { getSessionCookie } from "../../helpers/cookies.js";
 
 export default function CartaoControle() {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
   const [dadosCartaoControle, setdadosCartaoControle] = useState([]);
   const [_dadosCartaoControle, set_dadosCartaoControle] = useState([]);
   const [isFiltro, setIsFiltro] = useState(false);
@@ -91,7 +92,7 @@ export default function CartaoControle() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get(`/CartaoControle/get/${getSessionCookie()?.pacienteId}`).then((result) => {
+        api.get(`/CartaoControle/get/${userAcesso?.pacienteId}`).then((result) => {
           result?.data?.map(m => {
             m.data = moment(m.data).format("DD/MM/YYYY")
             m.dataRetorno = moment(m.dataRetorno).format("DD/MM/YYYY")

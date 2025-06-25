@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -12,10 +12,11 @@ import Loading from "../../components/Loading/Loading";
 import { showMessage } from "../../helpers/message";
 import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
-import { getSessionCookie } from "../../helpers/cookies";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
 const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
   const api = useApi();
+  const { userAcesso } = useContext(AuthContext);
   const [dadosReceituario, setDadosReceituario] = useState([]);
   const [listaMedicamentos, setListaMedicamentos] = useState([]);
   const [listaTipos, setListaTipos] = useState([]);
@@ -83,7 +84,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
         tempo: dadosEdicao.tempo,
         periodo: dadosEdicao.periodo,
         dose: dadosEdicao.dose,
-        usuarioId: getSessionCookie()?.usuarioId,
+        usuarioId: userAcesso?.usuarioId,
         medicamento: {
           id: dadosEdicao.medicamento.id,
           tipoMedicamentoId: dadosEdicao.medicamento.tipoMedicamentoId,
@@ -164,7 +165,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosReceituario = {
       ...dadosReceituario,
-      usuarioId: getSessionCookie()?.usuarioId
+      usuarioId: userAcesso?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {

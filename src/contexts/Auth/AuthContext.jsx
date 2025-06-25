@@ -18,11 +18,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const validateToken = async () => {
-      //const storageData = localStorage.getItem("authToken");
       if (getSessionCookie()?.token) {
         const data = await api.validateToken(getSessionCookie()?.token);
         if (data.user) {
           setIsLoggedIn(true);
+          setUserAcesso(data.user);
           await loadSetup();
           await loadNotificacoesNaoLidas();
         } else {
@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }) => {
       if (response.data?.usuarioId && response.data?.token) {
         setToken(response.data)
         setUserAcesso(response.data)
-        
         setIsLoggedIn(true)
         await loadSetup();
         return { success: true, statusCode: response.status }
@@ -64,7 +63,6 @@ export const AuthProvider = ({ children }) => {
 
   const setToken = (data) => {
     setSessionCookie(data)
-    //localStorage.setItem('authToken', data.token);
   };
 
   const loadSetup = async () => {
