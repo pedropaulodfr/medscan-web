@@ -12,14 +12,14 @@ const ListaVariaveis = () => {
     ]
 
     const listaVariaveis = [
-    { variavel: "{NOME}", descricao: "Nome de Tratamento do Usuário" },
-    { variavel: "{USUARIO}", descricao: "Nome de Usuário" },
-    { variavel: "{SENHA}", descricao: "Senha do Usuário" },
-    { variavel: "{URLWeb}", descricao: "Link do Sistema" },
-    { variavel: "{URLApi}", descricao: "Link da API" },
-    { variavel: "{DATARETORNO}", descricao: "Data de Retorno do Medicamento" },
-    { variavel: "{ICONEMEDICAMENTO}", descricao: "Ícone de Comprimido 💊" },
-    { variavel: "{ICONECALENDARIO}", descricao: "Ícone de Calendário 📆" },
+        { variavel: "{NOME}", descricao: "Nome de Tratamento do Usuário" },
+        { variavel: "{USUARIO}", descricao: "Nome de Usuário" },
+        { variavel: "{SENHA}", descricao: "Senha do Usuário" },
+        { variavel: "{URLWeb}", descricao: "Link do Sistema" },
+        { variavel: "{URLApi}", descricao: "Link da API" },
+        { variavel: "{DATARETORNO}", descricao: "Data de Retorno do Medicamento" },
+        { variavel: "{ICONEMEDICAMENTO}", descricao: "Ícone de Comprimido 💊" },
+        { variavel: "{ICONECALENDARIO}", descricao: "Ícone de Calendário 📆" },
     ]
 
     return (
