@@ -15,7 +15,7 @@ import { useApi } from "../../api/useApi";
 import CardRelatorio from "../../components/Cards/CardRelatorio";
 import Logotipo from "../../assets/medscan-logo-verde.png";
 
-export default function RelatorioMedicamentos () {
+export default function RelatorioMedicamentos ({ handleReturn }) {
     const api = useApi();
     const [dadosRelatorio, setDadosRelatorio] = useState([]);
     const [filtro, setFiltro] = useState({});
@@ -73,8 +73,6 @@ export default function RelatorioMedicamentos () {
         window.location.reload();
     }
 
-    const handleReturn = () => { }
-
     return (
         <Container>
             {loading && <Loading />}
@@ -83,6 +81,13 @@ export default function RelatorioMedicamentos () {
                 <h1 className="title-page">Relatório de Medicamentos </h1>
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                    <Button className="mb-2 mt-2 text-white" variant="secondary" onClick={handleReturn} >
+                        <i className="bi bi-arrow-left"></i> Voltar
+                    </Button>{" "}
+                </Col>
+            </Row>  
             <Row>
                 <Col md>
                     <h4>Filtros</h4>
@@ -150,11 +155,7 @@ export default function RelatorioMedicamentos () {
                 <>
                     <Row>
                         <Col>
-                            <Button
-                                className="m-3 mb-0 mt-2 text-white"
-                                variant="info"
-                                onClick={handlePrint}
-                            >
+                            <Button className="mb-1 mt-2 text-white" variant="info" onClick={handlePrint} >
                                 <i className="bi bi-printer-fill"></i> Imprimir
                             </Button>{" "}
                         </Col>
@@ -169,11 +170,6 @@ export default function RelatorioMedicamentos () {
                         <Row>
                             <Col className="d-flex justify-content-center m-3">
                                 <h4 className="text-success">Relatório de Medicamentos</h4>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className="mb-5 d-flex flex-row">
-                                <span className="me-4"><span className="fw-bold text-danger-emphasis">Status: </span> {filtro.status ? filtro.status == "true" ? "Inativo" : "Ativo" : "Todos" }</span>
                             </Col>
                         </Row>
                         <Row className="justify-content-center">

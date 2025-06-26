@@ -135,17 +135,17 @@ export default function Dashboard() {
         <Row>
           <Col onClick={() => {ModalElements(1)}}>
             <Cards titleHeader="Próximo ao retorno" text="Clique para ver detalhes" textAlign="center" cursorType="pointer" click={setCliqueCard} >
-            <div className="flex flex-col justify-center items-center text-center">
-              <h1>{dadosProximoAoRetorno?.length ?? 0}</h1>
-              <span>Clique para ver detalhes</span>
-            </div>
+              <div className="flex flex-col justify-center items-center text-center">
+                <h1>{dadosProximoAoRetorno?.length ?? 0}</h1>
+                <span>Clique para ver detalhes</span>
+              </div>
             </Cards>
           </Col>
           <Col onClick={() => {ModalElements(2)}}>
             <Cards titleHeader="Quantidade de Medicamentos" textAlign="center" cursorType="pointer" click={setCliqueCard}>
-                <div className="flex flex-col justify-center items-center text-center">
-                  <h1>{dadosQntMedicamentosPaciente?.length ?? 0}</h1>
-                  <span>Clique para ver detalhes</span>
+              <div className="flex flex-col justify-center items-center text-center">
+                <h1>{dadosQntMedicamentosPaciente?.length ?? 0}</h1>
+                <span>Clique para ver detalhes</span>
               </div>
             </Cards>
           </Col>

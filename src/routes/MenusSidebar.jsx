@@ -13,6 +13,7 @@ import SMTP from "../pages/Parametros/SMTP/SMTP";
 import Setup from "../pages/Setup";
 import Notificacoes from "../pages/Notificacoes";
 import RelatorioMedicamentos from "../pages/reports/RelatorioMedicamentos";
+import Relatorios from "../pages/Relatorios";
 
 var menus = [
   {
@@ -66,8 +67,7 @@ var menus = [
     path: "/relatorios",
     name: "Relatórios",
     icon: "bi bi-clipboard2-pulse",
-    modulo: ["Admin"],
-    component: RelatorioMedicamentos,
+    component: Relatorios,
     sidebar: true
   },
   {
