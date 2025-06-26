@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -14,9 +14,11 @@ import { showMessage } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
 import CardRelatorio from "../../components/Cards/CardRelatorio";
 import Logotipo from "../../assets/medscan-logo-verde.png";
+import AuthContext from "../../contexts/Auth/AuthContext";
 
-export default function RelatorioMedicamentos ({ handleReturn }) {
+export default function RelatorioReceituario ({ handleReturn }) {
     const api = useApi();
+    const { userAcesso } = useContext(AuthContext)
     const [dadosRelatorio, setDadosRelatorio] = useState([]);
     const [filtro, setFiltro] = useState({});
     const [isFiltro, setIsFiltro] = useState(false);
@@ -24,15 +26,12 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
 
     const headers = [
         { value: "Medicamento", objectValue: "medicamento" },
-        { value: "Tipo", objectValue: "tipo" },
-        { value: "Associado", objectValue: "associacao" },
-        { value: "Status", objectValue: "status" },
+        { value: "Dose", objectValue: "dose" },
+        { value: "Frequência", objectValue: "frequencia" },
     ];
 
   // Filtros
     const camposFiltrados = [ ]
-
-    const statusFiltro = ["Ativo", "Inativo"]
 
     const handleFiltroChange = (event, campo) => {
         let newValue;
@@ -52,7 +51,7 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
     const onSubmit = async () => {
         try {
             setLoading(true);
-            api.post("/Relatorios/relatorioMedicamentos", filtro).then((result) => {
+            api.get(`/Relatorios/relatorioReceituario/${userAcesso?.pacienteId}`).then((result) => {
                 const dadosOrdenados = result.data.sort((a, b) => a.medicamento.localeCompare(b.medicamento));
                 setDadosRelatorio(dadosOrdenados);
                 setLoading(false);
@@ -78,7 +77,7 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
             {loading && <Loading />}
             <Row className="justify-content-md-center">
                 <Col className="d-flex justify-content-center">
-                <h1 className="title-page">Relatório de Medicamentos </h1>
+                <h1 className="title-page">Relatório Receituário</h1>
                 </Col>
             </Row>
             <Row>
@@ -114,21 +113,6 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
                             )
                         })
                     }
-                    <Col md="3">
-                        <Form.Group className="mb-3">
-                            <Form.Label>Status</Form.Label>
-                            <Form.Select
-                                aria-label="Default select example"
-                                value={filtro.status || ""}
-                                onChange={(e) => handleFiltroChange(e, "status")}
-                            >
-                            <option value={""}>Todos</option>
-                            {statusFiltro?.map((m, index) => (
-                                <option key={index} value={m}>{m}</option>
-                            ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
                     <Col className=" mt-4" xs={0}>
                         <Button
                             className="mb-0 mt-2 text-white"
@@ -171,7 +155,7 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
                         <hr></hr>
                         <Row>
                             <Col className="d-flex justify-content-center m-3">
-                                <h4 className="text-success">Relatório de Medicamentos</h4>
+                                <h4 className="text-success">Relatório Receituário</h4>
                             </Col>
                         </Row>
                         <Row className="justify-content-center">
