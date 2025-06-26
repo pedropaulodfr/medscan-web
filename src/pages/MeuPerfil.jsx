@@ -125,7 +125,15 @@ export default function MeuPerfil() {
                   </span>
                 </div>
                 <div className="image-container">
-                  <Image className="profile-image" src={`${isChangeFoto ? "data:image/jpg;base64, " : ""}${usuario?.imagemPerfil}`} roundedCircle />
+                  <Image
+                    className="profile-image"
+                    src={`${isChangeFoto ? "data:image/jpg;base64, " : ""}${
+                      !!usuario?.imagemPerfil
+                        ? usuario?.imagemPerfil
+                        : "https://medscan-repository.s3.us-east-2.amazonaws.com/uploads/fotos/a2969792-7237-48df-b5f5-3933ef141b6a"
+                    }`}
+                    roundedCircle
+                  />
                   <div className="overlay">
                     <span className="overlay-text" onClick={handleChangeFoto}>Alterar Foto</span>
                   </div>
