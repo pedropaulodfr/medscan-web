@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getSessionCookie } from '../helpers/cookies';
 
-const tenantId = window.location.hostname.split('.')[0];
+const tenantId = window.location.hostname.split('.')[0].replace("www.", "");
 
 const api = axios.create({
     baseURL: tenantId == "localhost" ? "http://localhost:5284" : "https://medscan-api-ujft.onrender.com"
