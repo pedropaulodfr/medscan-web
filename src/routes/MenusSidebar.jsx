@@ -14,6 +14,8 @@ import Setup from "../pages/Setup";
 import Notificacoes from "../pages/Notificacoes";
 import RelatorioMedicamentos from "../pages/reports/RelatorioMedicamentos";
 import Relatorios from "../pages/Relatorios";
+import SolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/SolicitacaoMedicamento";
+import AnaliseSolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/AnaliseSolicitacaoMedicamento";
 
 var menus = [
   {
@@ -56,6 +58,14 @@ var menus = [
     sidebar: true
   },
   {
+    path: "/solicitacao",
+    name: "Solicitação",
+    icon: "bi bi-capsule",
+    modulo: ["Paciente"],
+    component: SolicitacaoMedicamento,
+    sidebar: true
+  },
+  {
     path: "/medicamentos",
     name: "Medicamentos",
     icon: "bi bi-capsule",
@@ -76,6 +86,14 @@ var menus = [
     icon: "bi bi-person-lines-fill",
     modulo: ["Admin"],
     component: Pacientes,
+    sidebar: true
+  },
+  {
+    path: "/analiseSolicitacao",
+    name: "Análise Solicitação",
+    icon: "bi bi-clipboard-plus",
+    modulo: ["Admin"],
+    component: AnaliseSolicitacaoMedicamento,
     sidebar: true
   },
   {

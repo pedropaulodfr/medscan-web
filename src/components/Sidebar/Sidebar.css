@@ -20,3 +20,16 @@
 .dropdown-menu a:hover{
     color: #50BF84
 }
+
+.pages-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+  scrollbar-width: thin;
+  scrollbar-color: #50BF84 #e6e6e600;
+}
+
+.container-fluid,
+.col-auto,
+.min-vh-100 {
+  height: 100vh !important;
+}
