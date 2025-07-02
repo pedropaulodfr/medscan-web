@@ -85,9 +85,7 @@ const Notificacoes = () => {
                                   </div>
                               </Accordion.Header>
                               <Accordion.Body>
-                                  <p>A data de retorno do seu medicamento está próxima.</p>
-                                  <p>💊 <b>Medicamento:</b> {notificacao.medicamento} <br></br></p>
-                                  <p><small>Para mais detalhes, verifique o dashboard!</small></p>
+                                  {notificacao.titulo}
                               </Accordion.Body>
                           </Accordion.Item>
                       </Accordion>
@@ -116,9 +114,7 @@ const Notificacoes = () => {
                                   </div>
                               </Accordion.Header>
                               <Accordion.Body>
-                                  <p>A data de retorno do seu medicamento está próxima.</p>
-                                  <p>💊 <b>Medicamento:</b> {notificacao.medicamento} <br></br></p>
-                                  <p><small>Para mais detalhes, verifique o dashboard!</small></p>
+                                <div className="notificacao-html" dangerouslySetInnerHTML={{ __html: notificacao?.notificacaoDetalhes?.assuntoEnviado }} />
                               </Accordion.Body>
                           </Accordion.Item>
                       </Accordion>

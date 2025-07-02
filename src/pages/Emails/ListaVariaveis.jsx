@@ -17,7 +17,9 @@ const ListaVariaveis = () => {
         { variavel: "{SENHA}", descricao: "Senha do Usuário" },
         { variavel: "{URLWeb}", descricao: "Link do Sistema" },
         { variavel: "{URLApi}", descricao: "Link da API" },
+        { variavel: "{MEDICAMENTO}", descricao: "Nome do Medicamento" },
         { variavel: "{DATARETORNO}", descricao: "Data de Retorno do Medicamento" },
+        { variavel: "{RESULTADO}", descricao: "Resultado de Alguma Análise ou Processamento" },
         { variavel: "{ICONEMEDICAMENTO}", descricao: "Ícone de Comprimido 💊" },
         { variavel: "{ICONECALENDARIO}", descricao: "Ícone de Calendário 📆" },
     ]
