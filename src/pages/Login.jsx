@@ -10,6 +10,7 @@ import Container from "react-bootstrap/Container";
 import { useAuth } from "../contexts/Auth/AuthContext"
 import Modals from "../components/Modals/Modals";
 import { useApi } from "../api/useApi";
+import Logo from "../assets/medscan-logo-verde.png";
 
 export const Login = () => {
   const auth = useAuth();
@@ -72,10 +73,7 @@ export const Login = () => {
   };
 
   return (
-    <div
-      className="login d-flex justify-content-center align-items-center gradiente"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="login d-flex justify-content-center align-items-center gradiente" style={{ minHeight: "100vh" }} >
       {loading && <Loading />}
       {isRecuperarSenha && 
         <Modals close={() => setIsRecuperarSenha(false)} title={"Recuperar Senha"} >
@@ -92,19 +90,15 @@ export const Login = () => {
       <Container>
         <Row className="justify-content-md-center">
           <Col xs={12} md={4}>
-            <Form
-              className=""
-              style={{  borderRadius: "15px", padding: "20px", backgroundColor: "#d9e9e4dc", color: "#008952" }}
-            >
-              <h2>Bem-vindo(a)!</h2>
-              <Form.Group
-                as={Row}
-                className="mb-3"
-                controlId="formPlaintextEmail"
-              >
-                <Form.Label column sm="2">
-                  Email
-                </Form.Label>
+            <Form style={{borderRadius: "15px", padding: "20px", backgroundColor: "#d9e9e4dc", color: "#008952" }} >
+              <Row className="justify-content-center">
+                <img src={Logo} style={{ maxWidth: "300px" }} />
+              </Row>
+              <Row className="text-center text-secondary-emphasis m-2">
+                <h2>Bem-vindo(a)!</h2>
+              </Row>
+              <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail" >
+                <Form.Label className="text-secondary-emphasis" column sm="2"> Email</Form.Label>
                 <Col sm="10">
                   <Form.Control
                     type="email"
@@ -114,14 +108,8 @@ export const Login = () => {
                   />
                 </Col>
               </Form.Group>
-              <Form.Group
-                as={Row}
-                className="mb-3"
-                controlId="formPlaintextPassword"
-              >
-                <Form.Label column sm="2">
-                  Senha
-                </Form.Label>
+              <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword" >
+                <Form.Label className="text-secondary-emphasis" column sm="2">Senha</Form.Label>
                 <Col sm="10">
                   <Form.Control
                     type="password"
@@ -132,20 +120,11 @@ export const Login = () => {
                 </Col>
               </Form.Group>
               <Form.Group className="mb-3">
-              <Form.Label column sm="4" style={{cursor: "pointer"}} onClick={setIsRecuperarSenha}>Esqueci a senha</Form.Label>
+                <Form.Label className="text-secondary" column sm="4" style={{cursor: "pointer"}} onClick={setIsRecuperarSenha}>Esqueci a senha</Form.Label>
               </Form.Group>
-              <Row className="justify-content-md-center">
-                <Col md="auto">
-                  <Button
-                    onClick={handleLogin}
-                    style={{
-                      backgroundColor: "#3F8576",
-                      borderColor: "#D6EDE7",
-                      color: "#ffffff",
-                      margin: "15px",
-                    }}
-                    size="lg"
-                  >
+              <Row className="justify-content-center text-center">
+                <Col className="d-grid gap-2">
+                  <Button className="m-2 text-white" variant="success" size="lg" onClick={handleLogin} >
                     Entrar
                   </Button>{" "}
                 </Col>
