@@ -67,7 +67,7 @@ function Sidebar({ sidebarStatus }) {
                     <img src={Logo} style={{ maxWidth: "70px" }}></img>
                   </span>
                 </a>
-                <CloseButton variant="white" onClick={handleSidebarStatus} />
+                <CloseButton className="mt-3" variant="white" onClick={handleSidebarStatus} />
               </div>
               <hr className="text-white d-none d-sm-block" />
               <div className="pages-content" style={{overflow: "auto", height: "100%"}}>
