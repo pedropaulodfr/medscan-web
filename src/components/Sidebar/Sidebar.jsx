@@ -136,36 +136,36 @@ function Sidebar({ sidebarStatus }) {
                   })}
                 </ul>
               </div>
-            </div>
-            <div className="dropdown open">
-              <a
-                className="text-decoration-none text-white dropdown-toggle p-3"
-                type="button"
-                id="triggerId"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i className="bi bi-person-circle"></i>
-                <span className="ms-2 d-none d-sm-inline">Meu Perfil</span>
-              </a>
-              <div className="dropdown-menu item" aria-labelledby="triggerId">
-                {true ? (
-                  <>
-                    <span className="ms-3 d-none d-sm-inline fw-semibold">{userAcesso?.nome}</span>
-                    <hr className="text-black d-none d-sm-block m-2" />
-                    <a className="dropdown-item" href="meu-perfil">
-                      Perfil
+              <div className="dropdown open">
+                <a
+                  className="text-decoration-none text-white dropdown-toggle p-3"
+                  type="button"
+                  id="triggerId"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-person-circle"></i>
+                  <span className="ms-2 d-none d-sm-inline">Meu Perfil</span>
+                </a>
+                <div className="dropdown-menu item" aria-labelledby="triggerId">
+                  {true ? (
+                    <>
+                      <span className="ms-3 d-none d-sm-inline fw-semibold">{userAcesso?.nome}</span>
+                      <hr className="text-black d-none d-sm-block m-2" />
+                      <a className="dropdown-item" href="meu-perfil">
+                        Perfil
+                      </a>
+                      <a className="dropdown-item" onClick={handleLogout}>
+                        Sair
+                      </a>
+                    </>
+                  ) : (
+                    <a className="dropdown-item" onClick={handleLogin}>
+                      Login
                     </a>
-                    <a className="dropdown-item" onClick={handleLogout}>
-                      Sair
-                    </a>
-                  </>
-                ) : (
-                  <a className="dropdown-item" onClick={handleLogin}>
-                    Login
-                  </a>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
