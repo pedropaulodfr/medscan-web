@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import AuthContext from "../contexts/Auth/AuthContext";
+import { act } from "react";
 
 export default function Home() {
   const { userAcesso } = useContext(AuthContext);
@@ -13,6 +14,14 @@ export default function Home() {
   const handleCard = (route) => {
     window.location.href = `/${route}`;
   };
+
+  const actions = [
+    {label: "Dashboard", color: "outline-success", modulo: "Paciente", path: "dashboard"},
+    {label: "Verificar Cartão", color: "outline-info", modulo: "Paciente", path: "card"},
+    {label: "Pacientes", color: "outline-success", modulo: "Admin", path: "pacientes"},
+    {label: "Usuarios", color: "outline-info", modulo: "Admin", path: "usuarios"},
+    {label: "Análise Solicitação", color: "outline-warning", modulo: "Admin", path: "analiseSolicitacao"},
+  ];
 
   return (
     <Container>
@@ -54,30 +63,19 @@ export default function Home() {
           <h4 style={{ color: "#00C7E9" }}>O que deseja fazer?</h4>
         </Col>
       </Row>
-      {userAcesso?.perfil != "Admin" &&
-        <Row className="justify-content-md-center">
-          <Col md="auto">
-            <Button variant="outline-success" className="m-2 mt-0.5" onClick={() => {handleCard("dashboard")}}>
-              Dashboard
-            </Button>
-            <Button variant="outline-info" className="m-2 mt-0.5" onClick={() => {handleCard("card")}}>
-              Verificar Cartão
-            </Button>
-          </Col>
-        </Row>
-      }
-      {userAcesso?.perfil == "Admin" &&
-        <Row className="justify-content-md-center">
-          <Col md="auto">
-            <Button variant="outline-success" className="m-2 mt-0.5" onClick={() => {handleCard("pacientes")}}>
-              Pacientes
-            </Button>
-            <Button variant="outline-info" className="m-2 mt-0.5" onClick={() => {handleCard("usuarios")}}>
-              Usuários
-            </Button>
-          </Col>
-        </Row>
-      }
+      <Row className="justify-content-md-center">
+        <Col md="auto">
+          {actions?.map(action => {
+            if (userAcesso?.perfil == action.modulo) {
+              return (
+                <Button variant={action.color} className="m-2 mt-0.5" onClick={() => {handleCard(action.path)}}>
+                  {action.label}
+                </Button>
+              )
+            }
+          })}
+        </Col>
+      </Row>
     </Container>
   );
 }
