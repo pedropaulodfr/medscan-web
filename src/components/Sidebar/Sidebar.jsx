@@ -93,20 +93,11 @@ function Sidebar({ sidebarStatus }) {
                     } else {
                       if (menu?.sidebar && (!menu.modulo || menu?.modulo?.filter(f => f == userAcesso?.perfil).length > 0)) {
                         return (
-                          <Accordion
-                            key={key}
-                            activeKey={activeKey}
-                            style={{ backgroundColor: "transparent" }}
-                          >
-                            <Accordion.Item
-                              eventKey="0"
-                              style={{ backgroundColor: "transparent" }}
-                            >
+                          <Accordion key={key} activeKey={activeKey} style={{ backgroundColor: "transparent" }} >
+                            <Accordion.Item eventKey="0" style={{ backgroundColor: "transparent" }} >
                               <Accordion.Header onClick={() => toggleAccordion("0")}>
                                 <i className={menu.icon}></i>
-                                <span className="ms-3 fs-5 d-none d-sm-inline">
-                                  {menu.name}
-                                </span>
+                                <span className="ms-3 fs-5 d-none d-sm-inline">{menu.name}</span>
                               </Accordion.Header>
                               <Accordion.Body>
                                 {menu.submenus.map((submenu, key) => {
@@ -119,9 +110,7 @@ function Sidebar({ sidebarStatus }) {
                                           aria-current="page"
                                         >
                                           <i className={submenu.icon}></i>
-                                          <span className="ms-3 d-none d-sm-inline">
-                                            {submenu.name}
-                                          </span>
+                                          <span className="ms-3 d-none d-sm-inline">{submenu.name}</span>
                                         </a>
                                       </li>
                                     );

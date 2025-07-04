@@ -12,7 +12,6 @@ import Emails from "../pages/Emails/Emails";
 import SMTP from "../pages/Parametros/SMTP/SMTP";
 import Setup from "../pages/Setup";
 import Notificacoes from "../pages/Notificacoes";
-import RelatorioMedicamentos from "../pages/reports/RelatorioMedicamentos";
 import Relatorios from "../pages/Relatorios";
 import SolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/SolicitacaoMedicamento";
 import AnaliseSolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/AnaliseSolicitacaoMedicamento";
