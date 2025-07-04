@@ -51,13 +51,13 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get("/Medicamentos/getMedicamentosReceituario/").then((result) => {
+        await api.get("/Medicamentos/getMedicamentosReceituario/").then((result) => {
           const dadosOrdenados = result.data?.sort((a, b) => a.identificacao.localeCompare(b.identificacao));
           setListaMedicamentos(dadosOrdenados);
           setLoading(false);
         });
 
-        api.get("/TipoMedicamentos/getAll").then((result) => {
+        await api.get("/TipoMedicamentos/getAll").then((result) => {
           setListaTipos(result.data);
           setLoading(false);
         });

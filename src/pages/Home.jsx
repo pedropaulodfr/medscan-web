@@ -6,10 +6,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import AuthContext from "../contexts/Auth/AuthContext";
-import { act } from "react";
+import { useAuth } from "../contexts/Auth/AuthContext";
 
 export default function Home() {
   const { userAcesso } = useContext(AuthContext);
+  const auth = useAuth();
 
   const handleCard = (route) => {
     window.location.href = `/${route}`;
@@ -58,6 +59,18 @@ export default function Home() {
         </Col>
         <Col xs={3}></Col>
       </Row>
+      {auth?.notificacoes.length > 0 &&
+        <>
+          <Row className="justify-content-center mt-5">
+            <Col md="auto">
+                <span><i class="bi bi-bell-fill text-warning"></i> Você possui notificações não lidas!</span>
+            </Col>
+          </Row>
+          <Row  className="justify-content-center" md="auto">
+            <Button variant="warning" className="m-2 mt-0.5" onClick={() => {handleCard("notificacoes")}}>Visualizar</Button>
+          </Row>
+        </>
+      }
       <Row className="justify-content-md-center mt-5">
         <Col md="auto">
           <h4 style={{ color: "#00C7E9" }}>O que deseja fazer?</h4>

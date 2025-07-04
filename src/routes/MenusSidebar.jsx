@@ -74,13 +74,6 @@ var menus = [
     sidebar: true
   },
   {
-    path: "/relatorios",
-    name: "Relatórios",
-    icon: "bi bi-clipboard2-pulse",
-    component: Relatorios,
-    sidebar: true
-  },
-  {
     path: "/pacientes",
     name: "Pacientes",
     icon: "bi bi-person-lines-fill",
@@ -94,6 +87,13 @@ var menus = [
     icon: "bi bi-clipboard-plus",
     modulo: ["Admin"],
     component: AnaliseSolicitacaoMedicamento,
+    sidebar: true
+  },
+  {
+    path: "/relatorios",
+    name: "Relatórios",
+    icon: "bi bi-clipboard2-pulse",
+    component: Relatorios,
     sidebar: true
   },
   {

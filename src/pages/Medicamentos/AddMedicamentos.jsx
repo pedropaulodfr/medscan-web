@@ -44,7 +44,9 @@ const AddMedicamentos = ({ handleReturn, dadosEdicao = [] }) => {
         concentracao: dadosEdicao.concentracao,
         tipoMedicamentoId: dadosEdicao.tipoMedicamentoId,
         associacao: dadosEdicao.associacao,
-        status: dadosEdicao.status
+        status: dadosEdicao.status,
+        solicitado: dadosEdicao.solicitado,
+        solicitadoString: dadosEdicao.solicitadoString,
       })
     }
   }, []);
@@ -152,7 +154,7 @@ const AddMedicamentos = ({ handleReturn, dadosEdicao = [] }) => {
               isInvalid={!!errors.identificacao}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="m-1 mb-3" controlId="formBasicCheckbox">
             <Form.Check 
               type="checkbox" 
               label="Associação" 
@@ -244,6 +246,11 @@ const AddMedicamentos = ({ handleReturn, dadosEdicao = [] }) => {
             </Form.Select>
           </Form.Group>
         </Col>
+        {_dadosMedicamentos?.solicitadoString &&
+          <Col md="4" className="m-1 mb-3">
+            <span><strong>Solicitado pelo Paciente: </strong>{_dadosMedicamentos?.solicitadoString}</span>
+          </Col>
+        }
       </Row>
       <Row>
         <Col>

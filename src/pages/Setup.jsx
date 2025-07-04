@@ -164,6 +164,19 @@ const Setup = () => {
                 />
                 </Form.Group>
             </Col>
+            <Col md="4">
+                <Form.Group className="mb-3">
+                <Form.Label>
+                    Análise Automática
+                </Form.Label>
+                <Form.Check
+                    type="switch"
+                    checked={dadosSetup?.analiseAutomatica}
+                    onChange={(e) => handleDadosSetupChange(e, "analiseAutomatica")}
+                    isInvalid={!!errors.analiseAutomatica}
+                />
+                </Form.Group>
+            </Col>
         </Row>
         <Row>
           <Col>

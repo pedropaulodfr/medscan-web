@@ -30,6 +30,7 @@ export default function Medicamentos() {
     { value: "Concentração", objectValue: "concentracaoUnidade" },
     { value: "Descrição", objectValue: "descricao" },
     { value: "Tipo", objectValue: "tipoMedicamento" },
+    { value: "Solicitado", objectValue: "solicitadoString" },
     { value: "Status", objectValue: "status" },
   ];
 
