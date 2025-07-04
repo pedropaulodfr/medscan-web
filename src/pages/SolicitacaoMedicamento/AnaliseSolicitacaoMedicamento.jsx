@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import TabelaListagem from "../../components/TabelaListagem/TabelaListagem";
 import Form from "react-bootstrap/Form";
+import Alert from 'react-bootstrap/Alert';
 
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
@@ -21,6 +22,7 @@ export default function AnaliseSolicitacaoMedicamento() {
   const [loading, setLoading] = useState(false);
   const [addSolicitacaoMedicamento, setAddSolicitacaoMedicamento] = useState(false);
   const [atualizarTabela , setAtualizarTabela]  = useState(false);
+  const [analiseAutomatica, setAnaliseAutomatica] = useState(false);
 
   const headers = [
     { value: "Medicamento", objectValue: "identificacao" },
@@ -91,7 +93,7 @@ export default function AnaliseSolicitacaoMedicamento() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        api.get(`/Solicitacoes/getAll/Todos`).then((result) => {
+        await api.get(`/Solicitacoes/getAll/Todos`).then((result) => {
           result.data?.map((m) => {
             m.concentracaoUnidade = `${m.concentracao} ${m.unidade}`;
           });
@@ -100,6 +102,10 @@ export default function AnaliseSolicitacaoMedicamento() {
           setDadosSolicitacoesMedicamentos(dadosOrdenados);
           set_DadosSolicitacoesMedicamentos(dadosOrdenados);
           setLoading(false);
+        });
+
+        await api.get(`/Setup`).then((result) => {
+          setAnaliseAutomatica(result?.data?.analiseAutomatica)
         });
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
@@ -212,9 +218,18 @@ export default function AnaliseSolicitacaoMedicamento() {
             )}
           </Col>
         </Row>
-        <Row>
-        </Row>
       </Form>
+      {analiseAutomatica &&
+        <Row>
+          <Col className="m-1" xs={0}>
+            <Alert variant="warning">
+              <b>Atenção:</b> A análise automática está ativada.
+              Todas as solicitações estão sendo aprovadas automaticamente.
+              Para alterar esse comportamento, acesse a tela de <b>Setup</b>.
+            </Alert>
+          </Col>
+        </Row>
+      }
       <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
         <Row className="justify-content-center">
           <Col>
