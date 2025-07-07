@@ -116,7 +116,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
             }
             <Row className={ userAcesso?.perfil == "Paciente" ? `text-black mb-4 shadow p-3 mb-5 bg-white rounded` : ""} style={{ borderRadius: "15px", padding: "20px" }} >
                 <Col lg="12" sm="12">
-                    <span className="fw-semibold">Perfil:</span> <span>{dadosUsuario?.perfil}</span>
+                    <span className="fw-semibold">Perfil:</span> <span>Paciente</span>
                 </Col>
                 <Col lg="4" sm="12">
                     <span className="fw-semibold">Nome:</span> <span>{dadosUsuario?.paciente?.nome ?? dadosUsuario?.nome}</span>
