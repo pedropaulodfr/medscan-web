@@ -74,7 +74,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
             cpf: dadosEdicao.cpf,
             email: dadosEdicao.email,
             email2: dadosEdicao.email2,
-            dataNascimento: moment(dadosEdicao.dataNascimento).format("YYYY-MM-DD") ,
+            dataNascimento: moment(dadosEdicao.dataNascimento, "DD/MM/YYYY").format("YYYY-MM-DD") ,
             logradouro: dadosEdicao.logradouro,
             numero: dadosEdicao.numero,
             complemento: dadosEdicao.complemento,
@@ -154,7 +154,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
       api.put("/Pacientes/update", objPaciente)
         .then((result) => {
           if (result.status !== 200)
-            throw new Error(result?.response?.data?.message);
+            throw new Error(result?.response?.data?.message ?? result?.response?.data?.title);
 
           showMessage(
             "Sucesso",
