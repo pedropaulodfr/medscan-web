@@ -5,11 +5,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import TabelaListagem from "../../components/TabelaListagem/TabelaListagem";
 import Form from "react-bootstrap/Form";
 
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
+import TabelaListagem from "../../components/TabelaListagem/TabelaListagem";
 import { showMessage, showQuestion } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
 import AddReceituarios from "./AddReceituario";

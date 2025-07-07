@@ -14,6 +14,7 @@ import { showMessage, showQuestion } from "../../helpers/message";
 import { useApi } from "../../api/useApi";
 import AddPacientes from "./AddPacientes";
 import moment from "moment";
+import FichaPaciente from "./FichaPaciente";
 
 export default function Pacientes() {
   const api = useApi();
@@ -24,6 +25,8 @@ export default function Pacientes() {
   const [addPaciente, setAddPaciente] = useState(false);
   const [editarPaciente, setEditarPaciente] = useState(false);
   const [dadosPacientesEditar, setDadosPacientesEditar] = useState([]);
+  const [visualizarPaciente, setVisualizarPaciente] = useState(false);
+  const [dadosPacientesVisualizar, setDadosPacientesVisualizar] = useState([]);
   const [atualizarTabela , setAtualizarTabela]  = useState(false);
 
   const headers = [
@@ -58,9 +61,15 @@ export default function Pacientes() {
     setDadosPacientesEditar(item)
     setEditarPaciente(true)
   }
+  
+  const handleVisualizar = (item) => { 
+    setDadosPacientesVisualizar(item)
+    setVisualizarPaciente(true)
+  }
  
   // Ações da tabela
   const actions = [
+    { icon: "bi bi-eye", color: "primary", action: handleVisualizar},
     { icon: "bi bi-pencil-square text-white", color: "warning", action: handleEditar},
     { icon: "bi bi-x-circle-fill text-white", color: "danger", action: handleDelete},
   ];
@@ -184,6 +193,7 @@ export default function Pacientes() {
     setAddPaciente(false)
     setEditarPaciente(false)
     setAtualizarTabela(true)
+    setVisualizarPaciente(false)
   }
 
   return (
@@ -194,7 +204,7 @@ export default function Pacientes() {
           <h1 className="title-page">Pacientes</h1>
         </Col>
       </Row>
-      {!addPaciente && !editarPaciente && (
+      {!addPaciente && !editarPaciente && !visualizarPaciente && (
         <>
           <Row>
             <Col md>
@@ -325,6 +335,11 @@ export default function Pacientes() {
       {editarPaciente && (
         <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
           <AddPacientes handleReturn={handleReturn} dadosEdicao={dadosPacientesEditar} />
+        </Form>
+      )}
+      {visualizarPaciente && (
+        <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
+          <FichaPaciente dados={dadosPacientesVisualizar} handleReturn={handleReturn} />
         </Form>
       )}
     </Container>
