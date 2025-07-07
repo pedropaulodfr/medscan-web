@@ -15,6 +15,7 @@ import Notificacoes from "../pages/Notificacoes";
 import Relatorios from "../pages/Relatorios";
 import SolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/SolicitacaoMedicamento";
 import AnaliseSolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/AnaliseSolicitacaoMedicamento";
+import Tratamentos from "../pages/Tratamentos/Tratamentos";
 
 var menus = [
   {
@@ -54,6 +55,14 @@ var menus = [
     icon: "bi bi-card-list",
     modulo: ["Paciente"],
     component: Receituario,
+    sidebar: true
+  },
+  {
+    path: "/tratamentos",
+    name: "Tratamentos",
+    icon: "bi bi-file-medical",
+    modulo: ["Paciente"],
+    component: Tratamentos,
     sidebar: true
   },
   {
