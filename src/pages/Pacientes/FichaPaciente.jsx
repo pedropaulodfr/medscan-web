@@ -8,13 +8,14 @@ import Col from "react-bootstrap/Col";
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
 import { useApi } from "../../api/useApi";
-import { showMessage } from "../../helpers/message";
+import { showMessage, showQuestion } from "../../helpers/message";
 import TabelaListagem from "../../components/TabelaListagem/TabelaListagem";
 import AuthContext from "../../contexts/Auth/AuthContext";
 import { Button, Form, Image } from "react-bootstrap";
 import AddReceituarios from "../Receituario/AddReceituario";
 import AddCartaoControle from "../CartaoControle/AddCartaoControle";
 import AddTratamento from "../Tratamentos/AddTratamentos";
+import AddTratamentos from "../Tratamentos/AddTratamentos";
 
 
 export default function FichaPaciente( { dados = [], handleReturn} ) {
@@ -26,8 +27,12 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
     const [addReceituario, setAddReceituario] = useState(false);
     const [addCartaoControle, setAddCartaoControle] = useState(false);
     const [addTratamento, setAddTratamento] = useState(false);
+    const [editarRegistro, setEditarRegistro] = useState(false);
+    const [dadosRegistroEditar, setDadosRegistroEditar] = useState([]);
+    const [atualizarTabela , setAtualizarTabela]  = useState(false);
 
     useEffect(() => {
+        setAtualizarTabela(false)
         const fetchData = async () => {
             try {
                 setLoading(true);
@@ -57,7 +62,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
         };
     
         fetchData();
-    }, [dadosUsuario, setDadosUsuario]);
+    }, [dadosUsuario, setDadosUsuario, atualizarTabela]);
 
     const headersReceituarios = [
         { value: "Medicamento", objectValue: "medicamentoFormatado" },
@@ -84,15 +89,54 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
         { value: "Status", objectValue: "status" },
     ];
 
-    if (addReceituario) 
-        return (<AddReceituarios handleReturn={handleReturn} usuarioId={dados?.usuariosId} />)
-    
-    if (addCartaoControle) 
-        return (<AddCartaoControle handleReturn={handleReturn} pacienteId={dados?.id} usuariosId={dados?.usuariosId} />)
-    
-    if (addTratamento) 
-        return (<AddTratamento handleReturn={handleReturn} pacienteId={dados?.id} />)
+    const handleEditar = (item) => {    
+        setDadosRegistroEditar(item)
+        setEditarRegistro(true)
+    }
 
+    const handleDelete = (item) => {
+        console.log(item);
+        
+        showQuestion("Tem certeza?", "Tem certeza que deseja excluir o registro? Esta ação é irreversível", "info",
+            (confirmation) => {
+                if (confirmation) {
+                    setLoading(true);
+                    api.delete(`/${item.tabela}/delete`, item.id).then((result) => {
+                        if (result.status !== 200) throw new Error("Houve um erro ao tentar excluir o registro!");
+                            
+                        showMessage( "Sucesso", "Registro excluído com sucesso!", "success", null);
+                        setLoading(false);
+                        setAtualizarTabela(true)
+                    })
+                    .catch((err) => {showMessage( "Erro", err, "error", null); setLoading(false)})
+                }
+            }
+        );
+    }
+
+    const handleReturnToFicha = () => {
+        setAddReceituario(false);
+        setAddCartaoControle(false);
+        setAddTratamento(false);
+        setEditarRegistro(false)
+        setAtualizarTabela(true)
+    }
+
+    // Ações da tabela
+    const actions = [
+        { icon: "bi bi-pencil-square text-white", color: "warning", action: handleEditar},
+        { icon: "bi bi-x-circle-fill text-white", color: "danger", action: handleDelete},
+    ];
+    
+    if (addReceituario || (editarRegistro && dadosRegistroEditar?.tabela == "Receituario")) 
+        return (<AddReceituarios handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []} usuarioId={!editarRegistro ? dados?.usuariosId : null} />)
+    
+    if (addCartaoControle || (editarRegistro && dadosRegistroEditar?.tabela == "CartaoControle")) 
+        return (<AddCartaoControle handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []}  pacienteId={!editarRegistro ? dados?.id : null} usuariosId={!editarRegistro ? dados?.usuariosId : null} />)
+    
+    if (addTratamento || (editarRegistro && dadosRegistroEditar?.tabela == "Tratamentos")) 
+        return (<AddTratamento handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []}  pacienteId={!editarRegistro ? dados?.id : null} />)
+    
     return (
         <>
             {loading && <Loading />}
@@ -162,7 +206,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                     <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.ativo}</span>
                 </Col>
             </Row>
-            {userAcesso?.perfil == "Admin" &&
+            {userAcesso?.perfil == "Admin" && 
                 <Row className="p-3">
                     <Row>
                         <Col>
@@ -178,7 +222,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                             </h4>
                         </Col>
                         <Row>
-                            <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios} />
+                            <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios?.map(r => ({...r, tabela: "Receituario"}))} actions={actions} />
                         </Row>
                     </Row>
                     <Row>
@@ -195,7 +239,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                             </h4>
                         </Col>
                         <Row>
-                            <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle} />
+                            <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle?.map(r => ({...r, tabela: "CartaoControle"}))} actions={actions} />
                         </Row>
                     </Row>
                     <Row>
@@ -212,7 +256,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                             </h4>
                         </Col>
                         <Row>
-                            <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos} />
+                            <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos?.map(r => ({...r, tabela: "Tratamentos"}))} actions={actions} />
                         </Row>
                     </Row>
                 </Row>
