@@ -17,7 +17,7 @@ import { useApi } from "../../api/useApi";
 import AuthContext from "../../contexts/Auth/AuthContext";
 import InputWithButtons from "../../components/Inputs/InputWithButtons";
 
-const AddTratamentos = ({ handleReturn, dadosEdicao = [] }) => {
+const AddTratamentos = ({ handleReturn, dadosEdicao = [], pacienteId = null }) => {
   const api = useApi();
   const { userAcesso } = useContext(AuthContext);
   const [dadosTratamento, setDadosTratamento] = useState({});
@@ -51,7 +51,8 @@ const AddTratamentos = ({ handleReturn, dadosEdicao = [] }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await api.get(`/Receituario/get/${userAcesso?.pacienteId}`).then((result) => {
+        const _pacienteId = pacienteId != null ? pacienteId : userAcesso?.pacienteId;
+        await api.get(`/Receituario/get/${_pacienteId}`).then((result) => {
           const listaOrdenada = result.data.sort((a, b) => a.medicamento?.identificacao.localeCompare(b.medicamento?.identificacao));
           setListaReceituariosPaciente(listaOrdenada);
           setLoading(false);
@@ -124,6 +125,7 @@ const AddTratamentos = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosTratamento = {
       ...dadosTratamento,
+      pacienteId: pacienteId != null ? pacienteId : userAcesso?.pacienteId,
       receituarios: receituariosVinculados.map(m => {
         return {id: m.id}
       })

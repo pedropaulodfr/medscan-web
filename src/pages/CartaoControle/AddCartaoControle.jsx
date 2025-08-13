@@ -15,7 +15,7 @@ import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
 import AuthContext from "../../contexts/Auth/AuthContext";
 
-const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
+const AddCartaoControle = ({ handleReturn, dadosEdicao = [], pacienteId = null, usuariosId = null }) => {
   const api = useApi();
   const { userAcesso } = useContext(AuthContext);
 
@@ -51,7 +51,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await api.get("/Medicamentos/getMedicamentosReceituario/").then((result) => {
+        await api.get(`/Medicamentos/getMedicamentosReceituario/${pacienteId != null ? pacienteId : ''}`).then((result) => {
           const dadosOrdenados = result.data?.sort((a, b) => a.identificacao.localeCompare(b.identificacao));
           setListaMedicamentos(dadosOrdenados);
           setLoading(false);
@@ -154,7 +154,7 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosCartaoControle = {
       ...dadosCartaoControle,
-      usuarioId: userAcesso?.usuarioId
+      usuarioId: usuariosId != null ? usuariosId : userAcesso?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {

@@ -11,7 +11,10 @@ import { useApi } from "../../api/useApi";
 import { showMessage } from "../../helpers/message";
 import TabelaListagem from "../../components/TabelaListagem/TabelaListagem";
 import AuthContext from "../../contexts/Auth/AuthContext";
-import { Button, Image } from "react-bootstrap";
+import { Button, Form, Image } from "react-bootstrap";
+import AddReceituarios from "../Receituario/AddReceituario";
+import AddCartaoControle from "../CartaoControle/AddCartaoControle";
+import AddTratamento from "../Tratamentos/AddTratamentos";
 
 
 export default function FichaPaciente( { dados = [], handleReturn} ) {
@@ -20,6 +23,9 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
     const [dadosUsuario, setDadosUsuario] = useState(dados)
     const [dadosPaciente, setDadosPaciente] = useState([])
     const [loading, setLoading] = useState(false);
+    const [addReceituario, setAddReceituario] = useState(false);
+    const [addCartaoControle, setAddCartaoControle] = useState(false);
+    const [addTratamento, setAddTratamento] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,8 +59,6 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
         fetchData();
     }, [dadosUsuario, setDadosUsuario]);
 
-    console.log(dadosUsuario);
-
     const headersReceituarios = [
         { value: "Medicamento", objectValue: "medicamentoFormatado" },
         { value: "Dose", objectValue: "doseFormatada" },
@@ -79,6 +83,15 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
         { value: "Fim", objectValue: "dataFimFormatada" },
         { value: "Status", objectValue: "status" },
     ];
+
+    if (addReceituario) 
+        return (<AddReceituarios handleReturn={handleReturn} usuarioId={dados?.usuariosId} />)
+    
+    if (addCartaoControle) 
+        return (<AddCartaoControle handleReturn={handleReturn} pacienteId={dados?.id} usuariosId={dados?.usuariosId} />)
+    
+    if (addTratamento) 
+        return (<AddTratamento handleReturn={handleReturn} pacienteId={dados?.id} />)
 
     return (
         <>
@@ -152,16 +165,55 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
             {userAcesso?.perfil == "Admin" &&
                 <Row className="p-3">
                     <Row>
-                        <h4 className="mb-2">Receituários</h4>
-                        <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios} />
+                        <Col>
+                            <h4 className="mb-0">Receituários 
+                                <Button
+                                    className="text-white m-2"
+                                    variant="info"
+                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                    onClick={() => setAddReceituario(true)}
+                                >
+                                    <i className="bi bi-plus"></i> Adicionar
+                                </Button>
+                            </h4>
+                        </Col>
+                        <Row>
+                            <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios} />
+                        </Row>
                     </Row>
                     <Row>
-                        <h4 className="mb-2">Cartão de Controle</h4>
-                        <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle} />
+                        <Col>
+                            <h4 className="mb-0">Cartão de Controle 
+                                <Button
+                                    className="text-white m-2"
+                                    variant="info"
+                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                    onClick={() => setAddCartaoControle(true)}
+                                >
+                                    <i className="bi bi-plus"></i> Adicionar
+                                </Button>
+                            </h4>
+                        </Col>
+                        <Row>
+                            <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle} />
+                        </Row>
                     </Row>
                     <Row>
-                        <h4 className="mb-2">Tratamentos</h4>
-                        <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos} />
+                        <Col>
+                            <h4 className="mb-0">Tratamentos
+                                <Button
+                                    className="text-white m-2"
+                                    variant="info"
+                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                    onClick={() => setAddTratamento(true)}
+                                >
+                                    <i className="bi bi-plus"></i> Adicionar
+                                </Button>
+                            </h4>
+                        </Col>
+                        <Row>
+                            <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos} />
+                        </Row>
                     </Row>
                 </Row>
             }

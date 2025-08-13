@@ -14,7 +14,7 @@ import { ValidaCampos } from "../../helpers/validacoes";
 import { useApi } from "../../api/useApi";
 import AuthContext from "../../contexts/Auth/AuthContext";
 
-const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
+const AddReceituarios = ({ handleReturn, dadosEdicao = [], usuarioId = null }) => {
   const api = useApi();
   const { userAcesso } = useContext(AuthContext);
   const [dadosReceituario, setDadosReceituario] = useState([]);
@@ -165,7 +165,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [] }) => {
 
     const _dadosReceituario = {
       ...dadosReceituario,
-      usuarioId: userAcesso?.usuarioId
+      usuarioId: usuarioId != null ? usuarioId : userAcesso?.usuarioId
     }
 
     if (Object.keys(dadosEdicao).length == 0) {
