@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showMessage } from "../helpers/message";
 import Loading from "../components/Loading/Loading";
@@ -11,6 +11,7 @@ import { useAuth } from "../contexts/Auth/AuthContext"
 import Modals from "../components/Modals/Modals";
 import { useApi } from "../api/useApi";
 import Logo from "../assets/medscan-logo-verde.png";
+import AddPacientes from "./Pacientes/AddPacientes";
 
 export const Login = () => {
   const auth = useAuth();
@@ -21,7 +22,26 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isRecuperarSenha, setIsRecuperarSenha] = useState(false);
+  const [isAutocadastro, setIsAutocadastro] = useState(false);  
   const [validated, setValidated] = useState(false);
+  const [setupAutocadastro, setSetupAutocadastro] = useState(false);
+
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          setLoading(true);  
+          await api.get(`/Setup`).then((result) => {
+            setSetupAutocadastro(result?.data?.pacienteAutocadastro);
+            setLoading(false);
+          });
+        } catch (error) {
+          showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, []);
 
   const handleEmailInput = (event) => {
     setEmail(event.target.value);
@@ -72,6 +92,21 @@ export const Login = () => {
     setValidated(true);
   };
 
+  if (isAutocadastro) {
+    return (
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col className="d-flex justify-content-center" >
+            <h1 className="title-page">Autocadastro Paciente</h1>
+          </Col>
+        </Row>
+        <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
+          <AddPacientes handleReturn={() => setIsAutocadastro(!isAutocadastro)} />
+        </Form>
+      </Container>
+    )
+  }
+
   return (
     <div className="login d-flex justify-content-center align-items-center gradiente" style={{ minHeight: "100vh" }} >
       {loading && <Loading />}
@@ -83,7 +118,7 @@ export const Login = () => {
               <Form.Control  type="email" placeholder="Digite seu e-mail" required />
               <Form.Control.Feedback type="invalid" />
             </Form.Group>
-            <Button type="submit" variant="primary">Recuperar Senha</Button>
+            <Button type="submit" variant="success">Recuperar Senha</Button>
           </Form>
         </Modals>
       }
@@ -124,11 +159,16 @@ export const Login = () => {
               </Form.Group>
               <Row className="justify-content-center text-center">
                 <Col className="d-grid gap-2">
-                  <Button className="m-2 text-white" variant="success" size="lg" onClick={handleLogin} >
-                    Entrar
-                  </Button>{" "}
+                  <Button className="m-2 text-white" variant="success" size="lg" onClick={handleLogin} >Entrar</Button>{" "}
                 </Col>
               </Row>
+              {setupAutocadastro &&
+                <Row className="justify-content-center text-center"ow>
+                  <Form.Group className="mt-1">
+                    <Form.Label className="text-secondary-emphasis" column style={{cursor: "pointer"}} onClick={setIsAutocadastro}>Paciente, cadastre-se aqui!</Form.Label>
+                  </Form.Group>
+                </Row>
+              }
             </Form>
           </Col>
         </Row>

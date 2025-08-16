@@ -177,6 +177,55 @@ const Setup = () => {
                 />
                 </Form.Group>
             </Col>
+            <Row>
+              <Col md>
+                <h4>{"Paciente"}</h4>
+              </Col>
+            </Row>
+            <Col md="4">
+                <Form.Group className="mb-3">
+                <Form.Label>Autocadastro</Form.Label>
+                <Form.Check
+                    type="switch"
+                    checked={dadosSetup?.pacienteAutocadastro}
+                    onChange={(e) => handleDadosSetupChange(e, "pacienteAutocadastro")}
+                    isInvalid={!!errors.pacienteAutocadastro}
+                />
+                </Form.Group>
+            </Col>
+            <Col md="4">
+                <Form.Group className="mb-3">
+                <Form.Label>Cadastra Receituário</Form.Label>
+                <Form.Check
+                    type="switch"
+                    checked={dadosSetup?.pacienteCadastraReceituario}
+                    onChange={(e) => handleDadosSetupChange(e, "pacienteCadastraReceituario")}
+                    isInvalid={!!errors.pacienteCadastraReceituario}
+                />
+                </Form.Group>
+            </Col>
+            <Col md="4">
+                <Form.Group className="mb-3">
+                <Form.Label>Cadastra Cartão de Controle</Form.Label>
+                <Form.Check
+                    type="switch"
+                    checked={dadosSetup?.pacienteCadastraCartaoControle}
+                    onChange={(e) => handleDadosSetupChange(e, "pacienteCadastraCartaoControle")}
+                    isInvalid={!!errors.pacienteCadastraCartaoControle}
+                />
+                </Form.Group>
+            </Col>
+            <Col md="4">
+                <Form.Group className="mb-3">
+                <Form.Label>Cadastra Tratamento</Form.Label>
+                <Form.Check
+                    type="switch"
+                    checked={dadosSetup?.pacienteCadastraTratamento}
+                    onChange={(e) => handleDadosSetupChange(e, "pacienteCadastraTratamento")}
+                    isInvalid={!!errors.pacienteCadastraTratamento}
+                />
+                </Form.Group>
+            </Col>
         </Row>
         <Row>
           <Col>

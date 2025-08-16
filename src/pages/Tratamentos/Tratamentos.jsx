@@ -28,6 +28,7 @@ export default function Tratamentos() {
   const [editarTratamentos, setEditarTratamentos] = useState(false);
   const [dadosTratamentoEditar, setDadosTratamentoEditar] = useState([]);
   const [atualizarTabela , setAtualizarTabela]  = useState(false);
+  const [pacienteCadastraTratamento, setPacienteCadastraTratamento] = useState(false);
 
   const headers = [
     { value: "Tratamento", objectValue: "identificacao" },
@@ -82,6 +83,11 @@ export default function Tratamentos() {
           setDadosTratamentos(result.data);
           set_DadosTratamentos(result.data);
           setLoading(false);
+        });
+
+        await api.get(`/Setup`).then((result) => {
+            setPacienteCadastraTratamento(result?.data?.pacienteCadastraTratamento);
+            setLoading(false);
         });
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
@@ -211,7 +217,7 @@ export default function Tratamentos() {
               </Col>
             </Row>
           </Form>
-          {!addTratamentos && !editarTratamentos && (
+          {!addTratamentos && !editarTratamentos && ((userAcesso?.perfil == "Paciente" && pacienteCadastraTratamento) || userAcesso?.perfil == "Admin") &&  (
             <Row>
               <Col>
                 <Button
@@ -228,7 +234,7 @@ export default function Tratamentos() {
           <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
             <Row className="justify-content-center">
               <Col>
-                <TabelaListagem headers={headers} itens={dadosTratamentos} actions={actions} />
+                <TabelaListagem headers={headers} itens={dadosTratamentos} actions={pacienteCadastraTratamento ? actions : []} />
               </Col>
             </Row>
           </Form>

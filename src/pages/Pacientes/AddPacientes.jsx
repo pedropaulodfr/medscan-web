@@ -115,7 +115,7 @@ const AddPacientes = ({ handleReturn, dadosEdicao = [] }) => {
         .then((result) => {
           if (result.status !== 200) throw new Error(result?.response?.data?.message);
 
-          showMessage("Sucesso", "Paciente cadastrado com sucesso!", "success", null);
+          showMessage("Sucesso", "Paciente cadastrado com sucesso!", "success", handleReturn);
           setLoading(false);
           handleLimparCampos();
         })

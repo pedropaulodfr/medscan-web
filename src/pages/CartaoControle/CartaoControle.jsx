@@ -27,6 +27,7 @@ export default function CartaoControle() {
   const [editarRegistro, setEditarRegistro] = useState(false);
   const [dadosRegistroEditar, setDadosRegistroEditar] = useState([]);
   const [atualizarTabela , setAtualizarTabela]  = useState(false);
+  const [pacienteCadastraCartaoControle, setPacienteCadastraCartaoControle] = useState(false); 
 
   const headers = [
     { value: "Data", objectValue: "data" },
@@ -34,6 +35,7 @@ export default function CartaoControle() {
     { value: "Quantidade", objectValue: "quantidadeFormatada" },
     { value: "Retorno", objectValue: "dataRetorno" },
     { value: "Profissional", objectValue: "profissional" },
+    { value: "Adicionado Pelo", objectValue: "perfilCadastro" },
   ];
 
   const handleDelete = (item) => {
@@ -102,6 +104,11 @@ export default function CartaoControle() {
           setdadosCartaoControle(result.data);
           set_dadosCartaoControle(result.data);
           setLoading(false);
+        });
+
+        await api.get(`/Setup`).then((result) => {
+            setPacienteCadastraCartaoControle(result?.data?.pacienteCadastraCartaoControle);
+            setLoading(false);
         });
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
@@ -298,7 +305,7 @@ export default function CartaoControle() {
               <Col></Col>
             </Row>
           </Form>
-          {!addRegistro && !editarRegistro && (
+          {!addRegistro && !editarRegistro && ((userAcesso?.perfil == "Paciente" && pacienteCadastraCartaoControle) || userAcesso?.perfil == "Admin") && (
             <Row>
               <Col>
                 <Button
@@ -321,7 +328,7 @@ export default function CartaoControle() {
           >
             <Row className="justify-content-center">
               <Col>
-                <TabelaListagem headers={headers} itens={dadosCartaoControle} actions={actions} />
+                <TabelaListagem headers={headers} itens={dadosCartaoControle} actions={pacienteCadastraCartaoControle ? actions : []} />
               </Col>
             </Row>
           </Form>

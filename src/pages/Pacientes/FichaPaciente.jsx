@@ -76,6 +76,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
         { value: "Quantidade", objectValue: "quantidadeFormatada" },
         { value: "Retorno", objectValue: "dataRetorno" },
         { value: "Profissional", objectValue: "profissional" },
+        { value: "Adicionado Pelo", objectValue: "perfilCadastro" },
     ];
 
     const headersTratamentos = [

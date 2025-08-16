@@ -26,6 +26,7 @@ export default function Receituario() {
   const [editarReceituario, setEditarReceituario] = useState(false);
   const [dadosReceituarioEditar, setDadosReceituarioEditar] = useState([]);
   const [atualizarTabela , setAtualizarTabela]  = useState(false);
+  const [pacienteCadastraReceituario, setPacienteCadastraReceituario] = useState(false);
 
   const headers = [
     { value: "Medicamento", objectValue: "medicamentoFormatado" },
@@ -84,6 +85,11 @@ export default function Receituario() {
           setDadosReceituario(result.data);
           set_DadosReceituario(result.data);
           setLoading(false);
+        });
+
+        await api.get(`/Setup`).then((result) => {
+            setPacienteCadastraReceituario(result?.data?.pacienteCadastraReceituario);
+            setLoading(false);
         });
       } catch (error) {
         showMessage("Aviso", "Erro ao buscar dados: " + error, "error", null);
@@ -200,7 +206,7 @@ export default function Receituario() {
               </Col>
             </Row>
           </Form>
-          {!addReceituario && !editarReceituario && (
+          {!addReceituario && !editarReceituario && ((userAcesso?.perfil == "Paciente" && pacienteCadastraReceituario) || userAcesso?.perfil == "Admin") && (
             <Row>
               <Col>
                 <Button
@@ -223,7 +229,7 @@ export default function Receituario() {
           >
             <Row className="justify-content-center">
               <Col>
-                <TabelaListagem headers={headers} itens={dadosReceituario} actions={actions} />
+                <TabelaListagem headers={headers} itens={dadosReceituario} actions={pacienteCadastraReceituario ? actions : []} />
               </Col>
             </Row>
           </Form>
