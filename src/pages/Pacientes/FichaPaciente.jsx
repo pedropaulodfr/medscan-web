@@ -204,7 +204,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                     <span className="fw-semibold">CNS:</span> <span>{dadosUsuario?.paciente?.cns ?? dadosUsuario?.cns}</span>
                 </Col>
                 <Col lg="4" sm="12">
-                    <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.ativo}</span>
+                    <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.usuarios?.ativo ?? dadosUsuario?.ativo}</span>
                 </Col>
             </Row>
             {userAcesso?.perfil == "Admin" && 
