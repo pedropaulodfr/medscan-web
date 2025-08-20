@@ -55,7 +55,7 @@ export default function QrCodePaciente() {
         <>
             {dadosUsuario &&
                 <Form className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
-                    <FichaPaciente dados={dadosUsuario} handleReturn={null} />
+                    <FichaPaciente dados={dadosUsuario} handleReturn={null} isQRCode={true} />
                 </Form>
             }
         </>
