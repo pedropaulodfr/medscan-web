@@ -41,7 +41,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await api.get(`/Pacientes/get/${userAcesso?.perfil == 'Admin' ? dadosUsuario?.usuariosId : dadosUsuario?.id}`).then((result) => {
+                await api.get(`/Pacientes/get/${userAcesso?.perfil == 'Admin' ? dadosUsuario?.usuariosId ?? dados?.usuariosId : dadosUsuario?.id ?? dados?.usuariosId}`).then((result) => {
                     result?.data?.receituarios?.map(m => {
                         m.medicamentoFormatado = `${m.medicamento.identificacao} ${m.medicamento.concentracao} ${m.medicamento.unidade}`;
                         m.doseFormatada = `${m.dose} ${m.medicamento.tipoMedicamento}`;
