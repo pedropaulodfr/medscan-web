@@ -22,7 +22,7 @@ import AddTratamento from "../Tratamentos/AddTratamentos";
 import Modals from "../../components/Modals/Modals";
 
 
-export default function FichaPaciente( { dados = [], handleReturn} ) {
+export default function FichaPaciente( { dados = [], handleReturn, isQRCode = false} ) {
     const api = useApi();
     const { userAcesso } = useContext(AuthContext)
     const [dadosUsuario, setDadosUsuario] = useState(dados)
@@ -167,7 +167,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                 </Modals>
             }
             <div id="printable-area">
-                {(userAcesso?.perfil == "Admin" || !userAcesso?.perfil) &&
+                {(userAcesso?.perfil == "Admin" || isQRCode) &&
                     <>
                         {handleReturn &&
                             <Row>
@@ -178,7 +178,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                                 </Col>
                             </Row>
                         }
-                        {!userAcesso?.perfil &&
+                        {!isQRCode &&
                             <Row>
                                 <Col>
                                     <Button className="mb-1 mt-2 text-white" variant="info" onClick={handlePrint} >
@@ -245,7 +245,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                     </Col>
                 </Row>
                 <Row>
-                    {userAcesso?.perfil &&
+                    {!isQRCode &&
                         <Col className="d-flex justify-content-center">
                             <OverlayTrigger
                                 placement="top"
@@ -260,12 +260,12 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                         </Col>
                     }
                 </Row>
-                {(userAcesso?.perfil == "Admin" || !userAcesso?.perfil) && 
+                {(userAcesso?.perfil == "Admin" || isQRCode) && 
                     <Row className="p-3">
                         <Row>
                             <Col>
                                 <h4 className="mb-0">Receituários 
-                                    {userAcesso?.perfil &&
+                                    {!isQRCode &&
                                         <Button
                                             className="text-white m-2"
                                             variant="info"
@@ -278,13 +278,13 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                                 </h4>
                             </Col>
                             <Row>
-                                <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios?.map(r => ({...r, tabela: "Receituario"}))} actions={userAcesso?.perfil ? actions : []} />
+                                <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios?.map(r => ({...r, tabela: "Receituario"}))} actions={!isQRCode ? actions : []} />
                             </Row>
                         </Row>
                         <Row>
                             <Col>
                                 <h4 className="mb-0">Cartão de Controle 
-                                    {userAcesso?.perfil &&
+                                    {!isQRCode &&
                                         <Button
                                             className="text-white m-2"
                                             variant="info"
@@ -297,13 +297,13 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                                 </h4>
                             </Col>
                             <Row>
-                                <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle?.map(r => ({...r, tabela: "CartaoControle"}))} actions={userAcesso?.perfil ? actions : []} />
+                                <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle?.map(r => ({...r, tabela: "CartaoControle"}))} actions={!isQRCode ? actions : []} />
                             </Row>
                         </Row>
                         <Row>
                             <Col>
                                 <h4 className="mb-0">Tratamentos
-                                    {userAcesso?.perfil &&
+                                    {!isQRCode &&
                                         <Button
                                             className="text-white m-2"
                                             variant="info"
@@ -316,7 +316,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
                                 </h4>
                             </Col>
                             <Row>
-                                <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos?.map(r => ({...r, tabela: "Tratamentos"}))} actions={userAcesso?.perfil ? actions : []} />
+                                <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos?.map(r => ({...r, tabela: "Tratamentos"}))} actions={!isQRCode ? actions : []} />
                             </Row>
                         </Row>
                     </Row>
