@@ -11,3 +11,52 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media print {
+  table {
+    width: 100% !important;
+    max-width: 100% !important;
+    word-break: break-word;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    word-break: break-word;
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    font-size: 12px !important;
+    padding: 4px !important;
+  }
+
+  .row, .col, .container, .container-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Evita que elementos sejam cortados entre páginas */
+  .table-responsive, .shadow, .rounded, .mb-4, .p-3, .mb-5 {
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mb-4, .mb-5, .mt-4, .mt-5, .p-3, .py-3, .py-4, .pt-3, .pt-4 {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Remove espaçamento entre colunas e linhas do Bootstrap */
+  [class*="col-"], [class*="row"] {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

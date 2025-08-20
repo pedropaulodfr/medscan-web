@@ -14,6 +14,7 @@ import menus from './routes/MenusSidebar';
 import { Login } from './pages/Login';
 import RequireAuth from './contexts/Auth/RequireAuth';
 import AuthContext from './contexts/Auth/AuthContext';
+import QrCodePaciente from './pages/Pacientes/QrCodePaciente';
 
 function App() {
   const { userAcesso } = useContext(AuthContext);
@@ -48,6 +49,7 @@ function App() {
             })}
           </Route>
           <Route path="/" element={<Login />} />
+          <Route path="/qrCode/Paciente/:hash" element={<QrCodePaciente />} />
         </Routes>
       </Router>
     </div>

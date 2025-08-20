@@ -1,9 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
+import QRCode from "react-qr-code";
+
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
@@ -15,7 +19,7 @@ import { Button, Form, Image } from "react-bootstrap";
 import AddReceituarios from "../Receituario/AddReceituario";
 import AddCartaoControle from "../CartaoControle/AddCartaoControle";
 import AddTratamento from "../Tratamentos/AddTratamentos";
-import AddTratamentos from "../Tratamentos/AddTratamentos";
+import Modals from "../../components/Modals/Modals";
 
 
 export default function FichaPaciente( { dados = [], handleReturn} ) {
@@ -30,6 +34,7 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
     const [editarRegistro, setEditarRegistro] = useState(false);
     const [dadosRegistroEditar, setDadosRegistroEditar] = useState([]);
     const [atualizarTabela , setAtualizarTabela]  = useState(false);
+    const [cliqueQrCode, setCliqueQrCode] = useState(false);
 
     useEffect(() => {
         setAtualizarTabela(false)
@@ -96,8 +101,6 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
     }
 
     const handleDelete = (item) => {
-        console.log(item);
-        
         showQuestion("Tem certeza?", "Tem certeza que deseja excluir o registro? Esta ação é irreversível", "info",
             (confirmation) => {
                 if (confirmation) {
@@ -138,130 +141,187 @@ export default function FichaPaciente( { dados = [], handleReturn} ) {
     if (addTratamento || (editarRegistro && dadosRegistroEditar?.tabela == "Tratamentos")) 
         return (<AddTratamento handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []}  pacienteId={!editarRegistro ? dados?.id : null} />)
     
+    const handlePrint = () => {
+        const printContents = document.getElementById("printable-area").innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
+
     return (
         <>
             {loading && <Loading />}
-            {userAcesso?.perfil == "Admin" &&
-                <>
-                    <Row>
-                        <Col>
-                            <Button className="mb-5 mt-2 text-white" variant="secondary" onClick={handleReturn} >
-                                <i className="bi bi-arrow-left"></i> Voltar
-                            </Button>{" "}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className="d-flex justify-content-center mb-4">
-                            <h3>Ficha do Paciente</h3>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className="d-flex justify-content-center">
-                            <div className="image-container">
-                                <Image
-                                    className="profile-image"
-                                    roundedCircle
-                                    src={`${
-                                        !!dadosUsuario?.usuarios?.imagemPerfil
-                                        ? dadosUsuario?.usuarios?.imagemPerfil
-                                        : "https://medscan-repository.s3.us-east-2.amazonaws.com/uploads/fotos/a2969792-7237-48df-b5f5-3933ef141b6a"
-                                    }`}
-                                />
-                            </div>
-                        </Col>
-                    </Row>
-                </>
+            {cliqueQrCode && 
+                <Modals close={setCliqueQrCode} title={"QR Code do Paciente"}>
+                    <div style={{ height: "auto", margin: "0 auto", maxWidth: 300, width: "100%" }}>
+                        <QRCode
+                            size={256}
+                            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                            value={`${window.location.origin}/qrCode/Paciente/${dadosUsuario?.hash}`}
+                            viewBox={`0 0 256 256`}
+                        />
+                    </div>
+                </Modals>
             }
-            <Row className={ userAcesso?.perfil == "Paciente" ? `text-black mb-4 shadow p-3 mb-5 bg-white rounded` : ""} style={{ borderRadius: "15px", padding: "20px" }} >
-                <Col lg="12" sm="12">
-                    <span className="fw-semibold">Perfil:</span> <span>Paciente</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Nome:</span> <span>{dadosUsuario?.paciente?.nome ?? dadosUsuario?.nome}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Nome Completo:</span> <span>{dadosUsuario?.paciente?.nomeCompleto ?? dadosUsuario?.nomeCompleto}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Data de Nascimento:</span> <span>{moment(dadosUsuario?.paciente?.dataNascimento ?? dadosUsuario?.dataNascimento, "DD/MM/YYYY").format("DD/MM/YYYY")}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">E-mail:</span> <span>{dadosUsuario?.paciente?.email ?? dadosUsuario?.email}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">E-mail Alternativo:</span> <span>{dadosUsuario?.paciente?.email2 ?? dadosUsuario?.email2}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Código Cadastro:</span> <span>{dadosUsuario?.codigoCadastro}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Endereço:</span> <span>{dadosUsuario?.paciente?.endereco ?? dadosUsuario?.endereco}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Plano de Saúde:</span> <span>{dadosUsuario?.paciente?.planoSaude ?? dadosUsuario?.planoSaude}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">CNS:</span> <span>{dadosUsuario?.paciente?.cns ?? dadosUsuario?.cns}</span>
-                </Col>
-                <Col lg="4" sm="12">
-                    <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.usuarios?.ativo ?? dadosUsuario?.ativo}</span>
-                </Col>
-            </Row>
-            {userAcesso?.perfil == "Admin" && 
-                <Row className="p-3">
-                    <Row>
-                        <Col>
-                            <h4 className="mb-0">Receituários 
-                                <Button
-                                    className="text-white m-2"
-                                    variant="info"
-                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
-                                    onClick={() => setAddReceituario(true)}
-                                >
-                                    <i className="bi bi-plus"></i> Adicionar
-                                </Button>
-                            </h4>
-                        </Col>
+            <div id="printable-area">
+                {(userAcesso?.perfil == "Admin" || !userAcesso?.perfil) &&
+                    <>
+                        {handleReturn &&
+                            <Row>
+                                <Col>
+                                    <Button className="mb-5 mt-2 text-white" variant="secondary" onClick={handleReturn} >
+                                        <i className="bi bi-arrow-left"></i> Voltar
+                                    </Button>{" "}
+                                </Col>
+                            </Row>
+                        }
+                        {!userAcesso?.perfil &&
+                            <Row>
+                                <Col>
+                                    <Button className="mb-1 mt-2 text-white" variant="info" onClick={handlePrint} >
+                                        <i className="bi bi-printer-fill"></i> Imprimir
+                                    </Button>{" "}
+                                </Col>
+                            </Row>
+                        }
                         <Row>
-                            <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios?.map(r => ({...r, tabela: "Receituario"}))} actions={actions} />
+                            <Col className="d-flex justify-content-center mb-4">
+                                <h3>Ficha do Paciente</h3>
+                            </Col>
                         </Row>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <h4 className="mb-0">Cartão de Controle 
-                                <Button
-                                    className="text-white m-2"
-                                    variant="info"
-                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
-                                    onClick={() => setAddCartaoControle(true)}
-                                >
-                                    <i className="bi bi-plus"></i> Adicionar
-                                </Button>
-                            </h4>
-                        </Col>
                         <Row>
-                            <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle?.map(r => ({...r, tabela: "CartaoControle"}))} actions={actions} />
+                            <Col className="d-flex justify-content-center">
+                                <div className="image-container">
+                                    <Image
+                                        className="profile-image"
+                                        roundedCircle
+                                        src={`${
+                                            (!!dadosUsuario?.usuarios?.imagemPerfil || !!dadosUsuario?.imagemPerfil)
+                                            ? (dadosUsuario?.usuarios?.imagemPerfil ?? dadosUsuario?.imagemPerfil)
+                                            : "https://medscan-repository.s3.us-east-2.amazonaws.com/uploads/fotos/a2969792-7237-48df-b5f5-3933ef141b6a"
+                                        }`}
+                                    />
+                                </div>
+                            </Col>
                         </Row>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <h4 className="mb-0">Tratamentos
-                                <Button
-                                    className="text-white m-2"
-                                    variant="info"
-                                    style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
-                                    onClick={() => setAddTratamento(true)}
-                                >
-                                    <i className="bi bi-plus"></i> Adicionar
-                                </Button>
-                            </h4>
-                        </Col>
-                        <Row>
-                            <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos?.map(r => ({...r, tabela: "Tratamentos"}))} actions={actions} />
-                        </Row>
-                    </Row>
+                    </>
+                }
+                <Row className={ userAcesso?.perfil == "Paciente" ? `text-black mb-4 shadow p-3 mb-5 bg-white rounded` : ""} style={{ borderRadius: "15px", padding: "20px" }} >
+                    <Col lg="12" sm="12">
+                        <span className="fw-semibold">Perfil:</span> <span>Paciente</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Nome:</span> <span>{dadosUsuario?.paciente?.nome ?? dadosUsuario?.nome}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Nome Completo:</span> <span>{dadosUsuario?.paciente?.nomeCompleto ?? dadosUsuario?.nomeCompleto}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Data de Nascimento:</span> <span>{moment(dadosUsuario?.paciente?.dataNascimento ?? dadosUsuario?.dataNascimento, "DD/MM/YYYY").format("DD/MM/YYYY")}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">E-mail:</span> <span>{dadosUsuario?.paciente?.email ?? dadosUsuario?.email}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">E-mail Alternativo:</span> <span>{dadosUsuario?.paciente?.email2 ?? dadosUsuario?.email2}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Código Cadastro:</span> <span>{dadosUsuario?.codigoCadastro}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Endereço:</span> <span>{dadosUsuario?.paciente?.endereco ?? dadosUsuario?.endereco}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Plano de Saúde:</span> <span>{dadosUsuario?.paciente?.planoSaude ?? dadosUsuario?.planoSaude}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">CNS:</span> <span>{dadosUsuario?.paciente?.cns ?? dadosUsuario?.cns}</span>
+                    </Col>
+                    <Col lg="4" sm="12">
+                        <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.usuarios?.ativo ?? dadosUsuario?.ativo}</span>
+                    </Col>
                 </Row>
-            }
+                <Row>
+                    {userAcesso?.perfil &&
+                        <Col className="d-flex justify-content-center">
+                            <OverlayTrigger
+                                placement="top"
+                                overlay={
+                                    <Tooltip id="tooltip-qr">
+                                        Visualizar QR Code do Paciente
+                                    </Tooltip>
+                                }
+                            >
+                                <i className="bi bi-qr-code fs-1 text-info" onClick={() => setCliqueQrCode(!cliqueQrCode)} style={{ cursor: "pointer" }}></i>
+                            </OverlayTrigger>
+                        </Col>
+                    }
+                </Row>
+                {(userAcesso?.perfil == "Admin" || !userAcesso?.perfil) && 
+                    <Row className="p-3">
+                        <Row>
+                            <Col>
+                                <h4 className="mb-0">Receituários 
+                                    {userAcesso?.perfil &&
+                                        <Button
+                                            className="text-white m-2"
+                                            variant="info"
+                                            style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                            onClick={() => setAddReceituario(true)}
+                                        >
+                                            <i className="bi bi-plus"></i> Adicionar
+                                        </Button>
+                                    }
+                                </h4>
+                            </Col>
+                            <Row>
+                                <TabelaListagem headers={headersReceituarios} itens={dadosPaciente?.receituarios?.map(r => ({...r, tabela: "Receituario"}))} actions={userAcesso?.perfil ? actions : []} />
+                            </Row>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h4 className="mb-0">Cartão de Controle 
+                                    {userAcesso?.perfil &&
+                                        <Button
+                                            className="text-white m-2"
+                                            variant="info"
+                                            style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                            onClick={() => setAddCartaoControle(true)}
+                                        >
+                                            <i className="bi bi-plus"></i> Adicionar
+                                        </Button>
+                                    }
+                                </h4>
+                            </Col>
+                            <Row>
+                                <TabelaListagem headers={headersCartaoControle} itens={dadosPaciente?.cartaoControle?.map(r => ({...r, tabela: "CartaoControle"}))} actions={userAcesso?.perfil ? actions : []} />
+                            </Row>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h4 className="mb-0">Tratamentos
+                                    {userAcesso?.perfil &&
+                                        <Button
+                                            className="text-white m-2"
+                                            variant="info"
+                                            style={{ backgroundColor: "#3F8576", borderColor: "#3F8576" }}
+                                            onClick={() => setAddTratamento(true)}
+                                            >
+                                            <i className="bi bi-plus"></i> Adicionar
+                                        </Button>
+                                    }
+                                </h4>
+                            </Col>
+                            <Row>
+                                <TabelaListagem headers={headersTratamentos} itens={dadosPaciente?.tratamentos?.map(r => ({...r, tabela: "Tratamentos"}))} actions={userAcesso?.perfil ? actions : []} />
+                            </Row>
+                        </Row>
+                    </Row>
+                }
+            </div>
         </>
     );
 }

@@ -16,6 +16,7 @@ import Relatorios from "../pages/Relatorios";
 import SolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/SolicitacaoMedicamento";
 import AnaliseSolicitacaoMedicamento from "../pages/SolicitacaoMedicamento/AnaliseSolicitacaoMedicamento";
 import Tratamentos from "../pages/Tratamentos/Tratamentos";
+import QrCodePaciente from "../pages/Pacientes/QrCodePaciente";
 
 var menus = [
   {
