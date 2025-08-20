@@ -178,7 +178,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                                 </Col>
                             </Row>
                         }
-                        {!isQRCode &&
+                        {isQRCode &&
                             <Row>
                                 <Col>
                                     <Button className="mb-1 mt-2 text-white" variant="info" onClick={handlePrint} >
