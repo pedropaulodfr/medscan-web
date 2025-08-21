@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
-import QRCode from "react-qr-code";
-
+import { QRCode } from 'react-qrcode-logo';
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -20,6 +19,7 @@ import AddReceituarios from "../Receituario/AddReceituario";
 import AddCartaoControle from "../CartaoControle/AddCartaoControle";
 import AddTratamento from "../Tratamentos/AddTratamentos";
 import Modals from "../../components/Modals/Modals";
+import Logotipo from "../../assets/medscan-logo-qrCode.png"
 
 
 export default function FichaPaciente( { dados = [], handleReturn, isQRCode = false} ) {
@@ -169,6 +169,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                                             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                                             value={`${window.location.origin}/qrCode/Paciente/${dadosUsuario?.hash}`}
                                             viewBox={`0 0 256 256`}
+                                            logoImage={Logotipo}
                                         />
                                     </div>
                                     <h5 className="mt-4 mb-1" style={{color: "#3F8576"}}>Aponte a câmera para escanear</h5>
