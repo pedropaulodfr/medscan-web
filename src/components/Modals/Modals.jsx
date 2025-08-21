@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Modals( {children, title = "", close} ) {
+function Modals( {children, title = "", close, bgColor = "", bgColorTitle = ""} ) {
   const [lgShow, setLgShow] = useState(true);
 
   if (lgShow == false) {
@@ -17,12 +17,12 @@ function Modals( {children, title = "", close} ) {
         onHide={() => setLgShow(false)}
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
+        <Modal.Header closeButton style={{backgroundColor: bgColorTitle}} >
+          <Modal.Title id="example-modal-sizes-title-lg" >
             {title}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>{children}</Modal.Body>
+        <Modal.Body style={{backgroundColor: bgColor}}>{children}</Modal.Body>
       </Modal>
     </>
   );
