@@ -71,7 +71,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
   `;
 
     const handlePrintQrCode = useReactToPrint({
-        content: () => ref.current,
+        contentRef: ref,
         documentTitle: "QRCode do Paciente",
         removeAfterPrint: true,
         pageStyle: pageStyle
