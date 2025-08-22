@@ -26,6 +26,7 @@ import Logotipo from "../../assets/medscan-logo-qrCode.png"
 export default function FichaPaciente( { dados = [], handleReturn, isQRCode = false} ) {
     const api = useApi();
     const ref = useRef(null);
+    const refQrCode = useRef(null);
     const { userAcesso } = useContext(AuthContext)
     const [dadosUsuario, setDadosUsuario] = useState(dados)
     const [dadosPaciente, setDadosPaciente] = useState([])
@@ -71,7 +72,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
   `;
 
     const handlePrintQrCode = useReactToPrint({
-        contentRef: ref,
+        contentRef: refQrCode,
         documentTitle: "QRCode do Paciente",
         removeAfterPrint: true,
         pageStyle: pageStyle
@@ -183,13 +184,10 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
         return (<AddTratamento handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []}  pacienteId={!editarRegistro ? dados?.id : null} />)
     
     const handlePrint = () => {
-        const printContents = document.getElementById("printable-area").innerHTML;
-        const originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        window.location.reload();
+        contentRef: ref,
+        documentTitle: "Ficha do Paciente",
+        removeAfterPrint: true,
+        pageStyle: pageStyle
     }
 
     return (
@@ -199,7 +197,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                 <Modals close={setCliqueQrCode} bgColor="#3F8576">
                         <Row>
                             <Col className="m-0 p-3" style={{ backgroundColor: "#3F8576"}}>
-                                <div ref={ref} id="printable-area-qrcode">
+                                <div ref={refQrCode} id="printable-area-qrcode">
                                     <Row className="justify-content-center m-2">
                                         <Col xs={6} className="d-flex justify-content-center flex-column align-items-center" style={{ borderRadius: "20px", padding: "25px", backgroundColor: "#ffffff" }}>
                                             <h1 className="fw-semibold mt-3 mb-4" style={{ color: "#3F8576" }}>QRCode do Paciente</h1>
