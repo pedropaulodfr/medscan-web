@@ -1,6 +1,7 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import moment from "moment";
 import { QRCode } from 'react-qrcode-logo';
+import { useReactToPrint } from 'react-to-print';
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -24,6 +25,7 @@ import Logotipo from "../../assets/medscan-logo-qrCode.png"
 
 export default function FichaPaciente( { dados = [], handleReturn, isQRCode = false} ) {
     const api = useApi();
+    const qrCodeRef = useRef();
     const { userAcesso } = useContext(AuthContext)
     const [dadosUsuario, setDadosUsuario] = useState(dados)
     const [dadosPaciente, setDadosPaciente] = useState([])
@@ -35,6 +37,16 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
     const [dadosRegistroEditar, setDadosRegistroEditar] = useState([]);
     const [atualizarTabela , setAtualizarTabela]  = useState(false);
     const [cliqueQrCode, setCliqueQrCode] = useState(false);
+
+    const handlePrintQrCode = useReactToPrint({
+        content: () => qrCodeRef.current,
+        documentTitle: "QRCode do Paciente",
+        removeAfterPrint: true,
+        pageStyle: `
+            @page { size: auto; margin: 10mm; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        `,
+    });
 
     useEffect(() => {
         setAtualizarTabela(false)
@@ -156,25 +168,35 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
             {loading && <Loading />}
             {cliqueQrCode && 
                 <Modals close={setCliqueQrCode} bgColor="#3F8576">
+                    <div ref={qrCodeRef} id="printable-area-qrcode">
+                        <Row>
+                            <Col className="m-0 p-3" style={{ backgroundColor: "#3F8576"}}>
+                                <Row className="justify-content-center m-2">
+                                    <Col xs={6} className="d-flex justify-content-center flex-column align-items-center" style={{ borderRadius: "20px", padding: "25px", backgroundColor: "#ffffff" }}>
+                                        <h1 className="fw-semibold mt-3 mb-4" style={{ color: "#3F8576" }}>QRCode do Paciente</h1>
+                                        <div style={{ height: "auto", margin: "0 auto", maxWidth: 300, width: "100%"}}>
+                                            <QRCode
+                                                bgColor={"#ffffff"}
+                                                fgColor={"#3F8576"}
+                                                size={256}
+                                                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                                value={`${window.location.origin}/qrCode/Paciente/${dadosUsuario?.hash}`}
+                                                viewBox={`0 0 256 256`}
+                                                logoImage={Logotipo}
+                                                eyeRadius={6}
+                                            />
+                                        </div>
+                                        <h5 className="mt-4 mb-1" style={{color: "#3F8576"}}>Aponte a câmera para escanear</h5>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </div>
                     <Row>
-                        <Col className="m-0 p-3" style={{ backgroundColor: "#3F8576"}}>
-                            <Row className="justify-content-center m-2">
-                                <Col xs={6} className="d-flex justify-content-center flex-column align-items-center" style={{ borderRadius: "20px", padding: "25px", backgroundColor: "#ffffff" }}>
-                                    <h1 className="fw-semibold mt-3 mb-4" style={{ color: "#3F8576" }}>QRCode do Paciente</h1>
-                                    <div style={{ height: "auto", margin: "0 auto", maxWidth: 300, width: "100%"}}>
-                                        <QRCode
-                                            bgColor={"#ffffff"}
-                                            fgColor={"#3F8576"}
-                                            size={256}
-                                            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                            value={`${window.location.origin}/qrCode/Paciente/${dadosUsuario?.hash}`}
-                                            viewBox={`0 0 256 256`}
-                                            logoImage={Logotipo}
-                                        />
-                                    </div>
-                                    <h5 className="mt-4 mb-1" style={{color: "#3F8576"}}>Aponte a câmera para escanear</h5>
-                                </Col>
-                            </Row>
+                        <Col className="d-flex flex-row align-items-center m-0">
+                            <Button variant="light" onClick={handlePrintQrCode}>
+                                <i className="bi bi-printer-fill text-success"></i>
+                            </Button>
                         </Col>
                     </Row>
                 </Modals>
