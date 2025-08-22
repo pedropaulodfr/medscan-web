@@ -25,7 +25,7 @@ import Logotipo from "../../assets/medscan-logo-qrCode.png"
 
 export default function FichaPaciente( { dados = [], handleReturn, isQRCode = false} ) {
     const api = useApi();
-    const qrCodeRef = useRef();
+    const ref = useRef(null);
     const { userAcesso } = useContext(AuthContext)
     const [dadosUsuario, setDadosUsuario] = useState(dados)
     const [dadosPaciente, setDadosPaciente] = useState([])
@@ -38,14 +38,43 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
     const [atualizarTabela , setAtualizarTabela]  = useState(false);
     const [cliqueQrCode, setCliqueQrCode] = useState(false);
 
+    //Estilo da pagina de impressão
+  const pageStyle = `
+      @page { 
+        size: auto;  margin: 0mm ;
+      } 
+      @media print { 
+          body { -webkit-print-color-adjust: exact; } 
+      }
+      @media print {
+        @page{
+          size:A4;
+          margin:0;
+        }
+        .relatorio {
+          width: 100vw!important; 
+          display:flex;
+          flex-direction:column;
+        }
+        div.header{
+          display:table-header-group;
+        }
+        div.body{
+          display:table-row-group;
+          line-height: normal;
+        }
+        div.body h1 {
+          font-size: 16pt;
+        }
+    
+      }
+  `;
+
     const handlePrintQrCode = useReactToPrint({
-        content: () => qrCodeRef.current,
+        content: () => ref.current,
         documentTitle: "QRCode do Paciente",
         removeAfterPrint: true,
-        pageStyle: `
-            @page { size: auto; margin: 10mm; }
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        `,
+        pageStyle: pageStyle
     });
 
     useEffect(() => {
@@ -168,7 +197,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
             {loading && <Loading />}
             {cliqueQrCode && 
                 <Modals close={setCliqueQrCode} bgColor="#3F8576">
-                    <div ref={qrCodeRef} id="printable-area-qrcode">
+                    <div ref={ref} id="printable-area-qrcode">
                         <Row>
                             <Col className="m-0 p-3" style={{ backgroundColor: "#3F8576"}}>
                                 <Row className="justify-content-center m-2">
