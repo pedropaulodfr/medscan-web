@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -6,7 +7,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useReactToPrint } from 'react-to-print';
 
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
@@ -65,43 +65,45 @@ export default function RelatorioMedicamentos ({ handleReturn }) {
     }
 
     //Estilo da pagina de impressão
-      const pageStyle = `
-          @page { 
+    const pageStyle = `
+        @page { 
             size: auto;  margin: 0mm ;
-          } 
-          @media print { 
-              body { -webkit-print-color-adjust: exact; } 
-          }
-          @media print {
+        } 
+        @media print { 
+            body { -webkit-print-color-adjust: exact; } 
+        }
+        @media print {
             @page{
-              size:A4;
-              margin:0;
+                size:A4;
+                margin:0;
             }
             .relatorio {
-              width: 100vw!important; 
-              display:flex;
-              flex-direction:column;
+                width: 100vw!important; 
+                display:flex;
+                flex-direction:column;
             }
             div.header{
-              display:table-header-group;
+                display:table-header-group;
             }
             div.body{
-              display:table-row-group;
-              line-height: normal;
+                display:table-row-group;
+                line-height: normal;
             }
             div.body h1 {
-              font-size: 16pt;
+                font-size: 16pt;
             }
-        
-          }
-      `;
+            h3.title {
+                margin-top: 20px;
+            }
+        }
+    `;
 
-    const handlePrint = () => {
+    const handlePrint = useReactToPrint({
         contentRef: ref,
-        documentTitle: "Relatório Medicamentos",
+        documentTitle: "Relatório de Medicamentos",
         removeAfterPrint: true,
         pageStyle: pageStyle
-    }
+    });
 
     return (
         <Container>

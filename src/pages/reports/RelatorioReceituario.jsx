@@ -1,4 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
+
 
 // Bootstrap
 import Container from "react-bootstrap/Container";
@@ -18,6 +20,7 @@ import AuthContext from "../../contexts/Auth/AuthContext";
 
 export default function RelatorioReceituario ({ handleReturn }) {
     const api = useApi();
+    const ref = useRef(null);
     const { userAcesso } = useContext(AuthContext)
     const [dadosRelatorio, setDadosRelatorio] = useState([]);
     const [filtro, setFiltro] = useState({});
@@ -62,15 +65,46 @@ export default function RelatorioReceituario ({ handleReturn }) {
         }
     }
 
-    const handlePrint = () => {
-        const printContents = document.getElementById("printable-area").innerHTML;
-        const originalContents = document.body.innerHTML;
+    //Estilo da pagina de impressão
+    const pageStyle = `
+        @page { 
+            size: auto;  margin: 0mm ;
+        } 
+        @media print { 
+            body { -webkit-print-color-adjust: exact; } 
+        }
+        @media print {
+            @page{
+                size:A4;
+                margin:0;
+            }
+            .relatorio {
+                width: 100vw!important; 
+                display:flex;
+                flex-direction:column;
+            }
+            div.header{
+                display:table-header-group;
+            }
+            div.body{
+                display:table-row-group;
+                line-height: normal;
+            }
+            div.body h1 {
+                font-size: 16pt;
+            }
+            h3.title {
+                margin-top: 20px;
+            }
+        }
+    `;
 
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        window.location.reload();
-    }
+    const handlePrint = useReactToPrint({
+        contentRef: ref,
+        documentTitle: "Relatório de Receituário",
+        removeAfterPrint: true,
+        pageStyle: pageStyle
+    });
 
     return (
         <Container>
@@ -146,7 +180,7 @@ export default function RelatorioReceituario ({ handleReturn }) {
                             </Button>{" "}
                         </Col>
                     </Row>  
-                    <Form id="printable-area" className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
+                    <Form ref={ref} className="text-black mb-4 shadow p-3 mb-5 bg-white rounded">
                         <Row>
                             <Col className="d-flex justify-content-center m-3">
                                 <img src={Logotipo} className="img-fluid" width={250} />

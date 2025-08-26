@@ -40,40 +40,49 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
     const [cliqueQrCode, setCliqueQrCode] = useState(false);
 
     //Estilo da pagina de impressão
-  const pageStyle = `
-      @page { 
-        size: auto;  margin: 0mm ;
-      } 
-      @media print { 
-          body { -webkit-print-color-adjust: exact; } 
-      }
-      @media print {
-        @page{
-          size:A4;
-          margin:0;
+    const pageStyle = `
+        @page { 
+            size: auto;  margin: 0mm ;
+        } 
+        @media print { 
+            body { -webkit-print-color-adjust: exact; } 
         }
-        .relatorio {
-          width: 100vw!important; 
-          display:flex;
-          flex-direction:column;
+        @media print {
+            @page{
+                size:A4;
+                margin:0;
+            }
+            .relatorio {
+                width: 100vw!important; 
+                display:flex;
+                flex-direction:column;
+            }
+            div.header{
+                display:table-header-group;
+            }
+            div.body{
+                display:table-row-group;
+                line-height: normal;
+            }
+            div.body h1 {
+                font-size: 16pt;
+            }
+            h3.title {
+                margin-top: 20px;
+            }
         }
-        div.header{
-          display:table-header-group;
-        }
-        div.body{
-          display:table-row-group;
-          line-height: normal;
-        }
-        div.body h1 {
-          font-size: 16pt;
-        }
-    
-      }
-  `;
+    `;
 
     const handlePrintQrCode = useReactToPrint({
         contentRef: refQrCode,
         documentTitle: "QRCode do Paciente",
+        removeAfterPrint: true,
+        pageStyle: pageStyle
+    });
+
+    const handlePrint = useReactToPrint({
+        contentRef: ref,
+        documentTitle: "Ficha do Paciente",
         removeAfterPrint: true,
         pageStyle: pageStyle
     });
@@ -182,13 +191,6 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
     
     if (addTratamento || (editarRegistro && dadosRegistroEditar?.tabela == "Tratamentos")) 
         return (<AddTratamento handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []}  pacienteId={!editarRegistro ? dados?.id : null} />)
-    
-    const handlePrint = () => {
-        contentRef: ref,
-        documentTitle: "Ficha do Paciente",
-        removeAfterPrint: true,
-        pageStyle: pageStyle
-    }
 
     return (
         <>
@@ -228,7 +230,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                     </Row>
                 </Modals>
             }
-            <div id="printable-area">
+            <div ref={ref}>
                 {(userAcesso?.perfil == "Admin" || isQRCode) &&
                     <>
                         {handleReturn &&
@@ -243,7 +245,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                         {isQRCode &&
                             <Row>
                                 <Col>
-                                    <Button className="mb-1 mt-2 text-white" variant="info" onClick={handlePrint} >
+                                    <Button className="mb-1 mt-2 text-white no-print" variant="info" onClick={handlePrint} >
                                         <i className="bi bi-printer-fill"></i> Imprimir
                                     </Button>{" "}
                                 </Col>
@@ -251,7 +253,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                         }
                         <Row>
                             <Col className="d-flex justify-content-center mb-4">
-                                <h3>Ficha do Paciente</h3>
+                                <h3 class="title">Ficha do Paciente</h3>
                             </Col>
                         </Row>
                         <Row>
