@@ -43,19 +43,19 @@ var menus = [
     sidebar: true
   },
   {
-    path: "/card",
-    name: "Cartão de Controle",
-    icon: "bi bi-table",
-    modulo: ["Paciente"],
-    component: CartaoControle,
-    sidebar: true
-  },
-  {
     path: "/receituario",
     name: "Receituário",
     icon: "bi bi-card-list",
     modulo: ["Paciente"],
     component: Receituario,
+    sidebar: true
+  },
+  {
+    path: "/card",
+    name: "Cartão de Controle",
+    icon: "bi bi-table",
+    modulo: ["Paciente"],
+    component: CartaoControle,
     sidebar: true
   },
   {

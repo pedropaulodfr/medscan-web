@@ -1,6 +1,7 @@
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import "./TabelaListagem.css";
+import { Alert } from "react-bootstrap";
 
 
 function TabelaListagem({ headers = [], itens = [], actions = [] }) {
@@ -36,6 +37,11 @@ function TabelaListagem({ headers = [], itens = [], actions = [] }) {
           ))}
         </tbody>
       </Table>
+      {itens.length == 0 && 
+        <Table striped bordered hover responsive="lg">
+          <Alert variant="secondary"><b>Não há registros a serem exibidos</b></Alert>
+        </Table>
+      }
     </>
   );
 }

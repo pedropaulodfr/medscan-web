@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { Alert } from "react-bootstrap";
 
 // Utils e helpers
 import Loading from "../../components/Loading/Loading";
@@ -205,6 +206,15 @@ const AddCartaoControle = ({ handleReturn, dadosEdicao = [], pacienteId = null, 
           </Button>{" "}
         </Col>
       </Row>
+      {listaMedicamentos.length == 0 &&
+        <Row>
+          <Col className="m-0" xs={0}>
+            <Alert variant="warning">
+              <b>Atenção:</b> Para registrar um novo Cartão de Controle, é necessário cadastrar um <b>Receituário</b> previamente.
+            </Alert>
+          </Col>
+        </Row>
+      }
       <Row>
         <Col md>
           <h4>
