@@ -25,6 +25,7 @@ export default function Dashboard() {
   const { userAcesso } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [dadosProximoAoRetorno, setDadosProximoAoRetorno] = useState([]);
+  const [dadosRetorno, setDadosRetorno] = useState([]);
   const [dadosEstoqueMedicamentos, setdadosEstoqueMedicamentos] = useState([]);
   const [dadosQntMedicamentosPaciente, setDadosQntMedicamentosPaciente] = useState([]);
   const [cliqueCard, setCliqueCard] = useState(false);
@@ -53,6 +54,15 @@ export default function Dashboard() {
           setLoading(false);
         });
         
+        api.get(`/Dashboard/datasRetorno/${userAcesso?.pacienteId}`).then((result) => {
+          result?.data?.map(m => {
+            m.dataRetornoFormatada = moment(m.dataRetorno).format("DD/MM/YYYY")
+          })
+          
+          setDadosRetorno(result.data);
+          setLoading(false);
+        });
+        
         api.get(`/Dashboard/estoqueMedicamentos/${userAcesso?.pacienteId}`).then((result) => {
           setdadosEstoqueMedicamentos(result.data);
           setLoading(false);
@@ -75,11 +85,23 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  // Data de retorno dos medicamentos
+  // Data próximas de retorno dos medicamentos
   const data = []
   dadosProximoAoRetorno?.forEach((dr) => {
     const date = moment(dr.dataRetorno);
     data.push({
+      "title": dr.medicamento,
+      "allDay": true,
+      "start": new Date(date.year(), date.month(), date.date()),
+      "end": new Date(date.year(), date.month(), date.date())
+    });
+  });
+  
+  // Data de retorno dos medicamentos
+  const dataRetorno = []
+  dadosRetorno?.forEach((dr) => {
+    const date = moment(dr.dataRetorno);
+    dataRetorno.push({
       "title": dr.medicamento,
       "allDay": true,
       "start": new Date(date.year(), date.month(), date.date()),
@@ -157,7 +179,7 @@ export default function Dashboard() {
         </Row>
         <Row>
           <Col>
-            <CalendarioMaior events={data} />
+            <CalendarioMaior events={dataRetorno} />
           </Col>
         </Row>
       </Form>
