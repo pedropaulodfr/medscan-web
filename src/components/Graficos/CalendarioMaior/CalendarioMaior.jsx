@@ -2,7 +2,7 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-moment.locale("pt-BR");
+moment.locale("pt-br");
 moment.updateLocale("pt-br", {
   months: [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
