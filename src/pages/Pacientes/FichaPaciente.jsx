@@ -87,12 +87,18 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
         pageStyle: pageStyle
     });
 
+    const getUsuarioId = () => {
+        if (userAcesso?.perfil == 'Admin' && isQRCode) return dadosUsuario?.id 
+        if (userAcesso?.perfil == 'Admin') return dadosUsuario?.usuariosId ?? dados?.usuariosId
+        if (userAcesso?.perfil != 'Admin') return dadosUsuario?.id ?? dados?.usuariosId
+    }
+
     useEffect(() => {
         setAtualizarTabela(false)
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await api.get(`/Pacientes/get/${userAcesso?.perfil == 'Admin' ? dadosUsuario?.usuariosId ?? dados?.usuariosId : dadosUsuario?.id ?? dados?.usuariosId}`).then((result) => {
+                await api.get(`/Pacientes/get/${getUsuarioId()}`).then((result) => {
                     result?.data?.receituarios?.map(m => {
                         m.medicamentoFormatado = `${m.medicamento.identificacao} ${m.medicamento.concentracao} ${m.medicamento.unidade}`;
                         m.doseFormatada = `${m.dose} ${m.medicamento.tipoMedicamento}`;
@@ -182,7 +188,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
         { icon: "bi bi-pencil-square text-white", color: "warning", action: handleEditar},
         { icon: "bi bi-x-circle-fill text-white", color: "danger", action: handleDelete},
     ];
-    
+
     if (addReceituario || (editarRegistro && dadosRegistroEditar?.tabela == "Receituario")) 
         return (<AddReceituarios handleReturn={handleReturnToFicha} dadosEdicao={editarRegistro ? dadosRegistroEditar : []} usuarioId={!editarRegistro ? dados?.usuariosId : null} />)
     
@@ -284,7 +290,7 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                         <span className="fw-semibold">Nome Completo:</span> <span>{dadosUsuario?.paciente?.nomeCompleto ?? dadosUsuario?.nomeCompleto}</span>
                     </Col>
                     <Col lg="4" sm="12">
-                        <span className="fw-semibold">Data de Nascimento:</span> <span>{moment(dadosUsuario?.paciente?.dataNascimento ?? dadosUsuario?.dataNascimento, "DD/MM/YYYY").format("DD/MM/YYYY")}</span>
+                        <span className="fw-semibold">Data de Nascimento:</span> <span>{isQRCode ? moment(dadosUsuario?.dataNascimento).format("DD/MM/YYYY") : moment(dadosUsuario?.paciente?.dataNascimento).format("DD/MM/YYYY")}</span>
                     </Col>
                     <Col lg="4" sm="12">
                         <span className="fw-semibold">E-mail:</span> <span>{dadosUsuario?.paciente?.email ?? dadosUsuario?.email}</span>
@@ -292,18 +298,24 @@ export default function FichaPaciente( { dados = [], handleReturn, isQRCode = fa
                     <Col lg="4" sm="12">
                         <span className="fw-semibold">E-mail Alternativo:</span> <span>{dadosUsuario?.paciente?.email2 ?? dadosUsuario?.email2}</span>
                     </Col>
-                    <Col lg="4" sm="12">
-                        <span className="fw-semibold">Código Cadastro:</span> <span>{dadosUsuario?.codigoCadastro}</span>
-                    </Col>
+                    {dadosUsuario?.codigoCadastro &&
+                        <Col lg="4" sm="12">
+                            <span className="fw-semibold">Código Cadastro:</span> <span>{dadosUsuario?.codigoCadastro}</span>
+                        </Col>
+                    }
                     <Col lg="4" sm="12">
                         <span className="fw-semibold">Endereço:</span> <span>{dadosUsuario?.paciente?.endereco ?? dadosUsuario?.endereco}</span>
                     </Col>
-                    <Col lg="4" sm="12">
-                        <span className="fw-semibold">Plano de Saúde:</span> <span>{dadosUsuario?.paciente?.planoSaude ?? dadosUsuario?.planoSaude}</span>
-                    </Col>
-                    <Col lg="4" sm="12">
-                        <span className="fw-semibold">CNS:</span> <span>{dadosUsuario?.paciente?.cns ?? dadosUsuario?.cns}</span>
-                    </Col>
+                    {(dadosUsuario?.paciente?.planoSaude || dadosUsuario?.planoSaude) &&
+                        <Col lg="4" sm="12">
+                            <span className="fw-semibold">Plano de Saúde:</span> <span>{dadosUsuario?.paciente?.planoSaude ?? dadosUsuario?.planoSaude}</span>
+                        </Col>
+                    }
+                    {(dadosUsuario?.paciente?.cns || dadosUsuario?.cns) &&
+                        <Col lg="4" sm="12">
+                            <span className="fw-semibold">CNS:</span> <span>{dadosUsuario?.paciente?.cns ?? dadosUsuario?.cns}</span>
+                        </Col>
+                    }
                     <Col lg="4" sm="12">
                         <span className="fw-semibold">Status:</span> <span>{dadosUsuario?.usuarios?.ativo ?? dadosUsuario?.ativo}</span>
                     </Col>
