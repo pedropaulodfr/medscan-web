@@ -43,7 +43,7 @@ const AddReceituarios = ({ handleReturn, dadosEdicao = [], usuarioId = null }) =
   ];
 
   // Períodos
-  const periodos = ["Manhã", "Tarde", "Noite"]
+  const periodos = ["Manhã", "Tarde", "Noite", "Manhã/Tarde", "Tarde/Noite", "Manhã/Noite", "Manhã/Tarde/Noite"];
 
   useEffect(() => {
     const fetchData = async () => {
